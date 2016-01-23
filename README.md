@@ -10,7 +10,7 @@ Thanks to those whose dedication and intelligence have made it better to navigat
 ##My Projects Thus Far
 ![alt text]()   Shadowfax: A Text Mini-Adventure  
 ![alt text]()   Breaker  
-![alt text](https://cloud.githubusercontent.com/assets/16845455/12532858/dd43438a-c1db-11e5-8643-6a642d6d13a8.png)  InQuizition  
+![alt text]()  InQuizition  
 
 ##Tech used
 
