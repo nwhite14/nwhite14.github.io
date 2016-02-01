@@ -1,0 +1,60 @@
+<!DOCTYPE htm/* global myArray */
+
+l>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Chapter 1 Example 2</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <script>
+var user = prompt("You are strolling through a luscious meadow. The grass and flowers ebb and flow to the current of the wind that makes you think of a gold and silver sea. Shadowfax gallops to you from across the field. What will you do? RIDE, PET, or Punch him?").toUpperCase();
+
+switch(user)
+{
+    case "RIDE":
+        var goodRider = prompt("Are you a good rider?").toUpperCase();
+        var saddle = prompt("Do you have a saddle with you?").toUpperCase();
+        if( goodRider === "YES" && saddle === "YES" )
+        {
+            document.write("Shadowfax reluctantly lets you place the saddle on him and you find that everytime you buckle it up it keeps going loose and falling down. Shadowfax laughs at you every time as he lets out his breath after you buckle it. You don't get to ride him.");    
+        }
+        else
+        {
+        document.write("Shadowfax lets you climb on his back and you both scanter off to explore the depths of middle earth.");
+        }
+    break;
+    
+    case "PET":
+        var gloves = prompt("Are you wearing gloves?").toUpperCase();
+        var smell = prompt("Do you smell nice?").toUpperCase();
+        
+        
+        if( gloves === "YES" || smell === "YES" )
+        {
+            document.write("Shadowfax hates gloves and nice smells. He walks away and you don't get to pet him. Loser.");    
+        }
+        else
+        {
+        document.write("You reach your hand respectfully to his long nose and pad him affectionately.");
+        }
+    break;
+    
+    case "PUNCH":
+        document.write("You are too slow! Shadowfax dodges your punch and rages out on you. His blunt teeth begin to crush your bones and you feel pain like you have never felt before. Game Over! Shadowfax Ate You.");
+    break;
+    
+    default:
+    document.write("What an idiot.");
+}
+
+
+        </script>
+    </body>
+</html>
