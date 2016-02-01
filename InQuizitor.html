@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script>window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"><\/script>')</script>
+
+		<style>
+			#mainPageContainer {
+	          width: 400px;
+	          height: 450px;
+	          margin: auto;
+	          background: linear-gradient(#46A9D9, #6BBDE5);
+	          box-shadow: 1px 1px 1px 0px #0780BA;
+	          text-align: center;
+	          position: relative;
+	          color: #0F3C51;
+	        }
+
+	        #title {
+	          font-family: baskerville;
+	          padding-top: 30px;
+			  margin-bottom: 0;
+	        }
+
+	        #takeQuizButton, #makeQuizButton {
+	        	width: 100px;
+	        }
+
+			#makeQuizButton
+	        {
+	        	margin-top: 65px;
+	        }
+
+	        #main, #submit {
+
+	        }
+
+	        .footerButton {
+	        	position: absolute;
+	        	text-align: center;
+	        	bottom: 0;
+	        	margin-bottom: 5px;
+                width: 78px;
+	        }
+
+            #prevButton {
+                display: block;
+                float: left;
+                margin-left: 80px;
+            }
+
+            #userPageButton {
+                display: block;
+                float: left;
+                margin-left: 163px;
+            }
+
+            #quitButton {
+                display: block;
+                float: left;
+                margin-left: 248px;
+            }
+
+	        #contentContainer {
+	        	margin-top: 40px;
+	        	text-align: center;
+	        }
+
+	        #scrollingContainerDiv {
+	        	width: 300px;
+	        	height: 200px;
+	        	background-color: #CEF0FE;
+	        	margin-top: 10px;
+	        	margin-left: 50px;
+	        	overflow: auto;
+	        }
+
+	        button, input[type=submit] {
+	        	font-family: baskerville;
+	        	font-size: 15px;
+	        	color: #BFE8FD;
+	        	border: 0;
+	        	background: linear-gradient(#2595CB, #0780BA);
+	        	box-shadow: 1px 1px 1px 0px #0780BA;
+	        	padding: 8px;
+	        }
+
+	        form input[type="text"], input[type="text"] {
+			  padding: 8px;
+			  border: solid 1px #fff;
+			  box-shadow: inset 1px 1px 2px 0 #707070;
+			  transition: box-shadow 0.3s;
+			  font-family: 'Franklin Gothic Medium';
+			  font-size: 15px;
+			  color: #0F3C51;
+			  margin: 2px;
+			}
+			form input[type="text"]:focus, form input[type="text"].focus, input[type="text"]:focus,
+			input[type="text"].focus {
+		  		box-shadow: inset 1px 1px 2px 0 #c9c9c9;
+			}
+
+			#mainPageContainer {
+				padding-top: 8px;
+			}
+
+			#mCQuestionForm p {
+				display: inline-block;
+				margin: 0;
+
+			}
+
+			form  {
+				text-align: right;
+				padding-right: 70px;
+				margin: 2px 0px;
+			}
+
+			form input[type="submit"] {
+				margin-top: 2px;
+				margin-right: 3px;
+			}
+
+			form input[type="radio"] {
+				padding: 4px 0px;
+				margin-top: 10px;
+			}
+
+			form #trueP {
+				margin-right: 138px;
+
+			}
+
+			form #falseP {
+				margin-right: 135px;
+			}
+
+			.boldy {
+				font-weight: bold;
+				font-size: 18px;
+			}
+
+			.items {
+				width: 300px;
+			}
+
+            .submit {
+                margin-top: 5px;
+            }
+
+            .quizTaker {
+                display: inline-block;
+                margin: auto;
+                float: left;
+                text-align: left;
+            }
+
+            #questionDisplay {
+                font-size: 18px;
+                margin-left: 20px;
+                margin-bottom: 10px;
+                width: 380px;
+                text-align: left;
+            }
+
+            #c1Radio, #c2Radio, #c3Radio, #c4Radio{
+                display: inline-block;
+                margin: 2px;
+                margin-left: 20px;
+                vertical-align: top;
+            }
+
+            #c1P, #c2P, #c3P, #c4P {
+                display: inline-block;
+                margin-left: 20px;
+            }
+
+            #questionDiv {
+                width: 380px;
+            }
+
+            #nextButton {
+                margin-top: 6px;
+            }
+
+            label {
+                margin-left: 10px;
+                width: 300px;
+
+            }
+
+            .testDiv {
+                margin: 6px 0px;
+            }
+
+            #quizScore {
+                font-size: 80px;
+                margin: 0px;
+            }
+
+            #scoreTitle {
+                margin-bottom: 0px;
+            }
+
+
+        </style>
+
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+      <div id='mainPageContainer'>
+      	<h2 id='title'></h2>
+      	<div id='contentContainer'></div>
+        <button id='prevButton' class='footerButton'>< Prev</button>
+      	<button id='userPageButton' class='footerButton' value='User Page'>User Page</button>
+      	<button id='quitButton' class='footerButton' value='Quit'>Quit</button>
+        
+      </div>
+
+        <script>
+
+        //
+        //
+        //
+        //----------------------------------------------------  Main  -----------------------------------------------------------
+        //---------------------------------------------------- Variables  -------------------------------------------------------
+
+        function main() {
+        	var loginPageTitle = "InQuizitor";
+        	var loginPageContents = "<p id='existingUserMessage'>Existing users please sign in</p> <input id='existingUserBox'  type='text' placeholder='Username' /> <button id='loginUserButton'>Log In</button> <p id='newUserMessage'>New user?</br> Create new username</p> <input id='newUserBox' type='text' placeholder='New Username' /> <button id='createUserButton'>Create</button>"
+        	var userPageContents = "<button id='makeQuizButton'>Make Quiz</button></br><button id='takeQuizButton'>Take Quiz</button>";
+        	var quizManagerMakePageContents = "";
+        	var quizMakerPageContents = "<input id='quizName' type='text' value='' /> ";
+        	var mCQuestionFormPageContents = "<form id='mCQuestionForm'><p class='boldy'>Question: </p> <input id='qBox' type='text' value='' /></br> <p>Choice 1: </p><input id='c1Box' type='text' value='' /></br> <p>Choice 2: </p><input id='c2Box' type='text' value='' /></br> <p>Choice 3: </p><input id='c3Box' type='text' value='' /></br> <p>Choice 4: </p><input id='c4Box' type='text' value='' /></br> <p>Correct Answer: </p><input id='aBox' type='text' value='' /></br> <button id='questionFormSubmit' type='button' class='submit' value='Submit'>Submit</button></form>";
+        	var tFQuestionFormPageContents = "<form id='mCQuestionForm'> <p class='boldy'>Question: </p> <input id='qBox' type='text' value='Type question here.' /></br><input id='trueRadio' type='radio' name='chum'><p id='trueP'>True</p></input></br> <input id='falseRadio' type='radio' name='chum'><p id='falseP'>False</p></input></br> <button id='questionFormSubmit' type='button' class='submit' value='Submit'>Submit</button> </form>";
+            var quizManagerTakePageContents = "";
+            var tFTakePageContents = "<p id='questionDisplay' class='quizTaker' ></p> <div id='questionDiv' class='quizTaker'> <div class='testDiv'><input id='c1Radio' type='radio' name='chum'> <label id='c1P' for='c1Radio' >True</label><br> </div> <div class='testDiv'> <input id='c2Radio' type='radio' name='chum'> <label id='c2P' for='c2Radio' >False</label><br> </div> </div> <p id='questionNumber' class='quizTaker' ></p> <button id='nextButton'>Next ></button> ";
+            var mCTakePageContents = "<p id='questionDisplay' class='quizTaker' ></p> <div id='questionDiv' class='quizTaker'> <div class='testDiv'><input id='c1Radio' type='radio' name='chum'> <label id='c1P' for='c1Radio' ></label><br> </div> <div class='testDiv'> <input id='c2Radio' type='radio' name='chum'> <label id='c2P' for='c2Radio' ></label><br> </div> <div class='testDiv'> <input id='c3Radio' type='radio' name='chum'> <label id='c3P' for='c3Radio' ></label><br></div> <div class='testDiv'> <input id='c4Radio' type='radio' name='chum'> <label id='c4P' for='c4Radio' ></label> <br></div></div> <p id='questionNumber' class='quizTaker' ></p> <button id='nextButton'>Next ></button> ";
+            var scorePageContents = "<h1 id='scoreTitle' >Quiz Score</h1> <p id='quizScore'></p> <p id='xOfX'></p> <button id='retakeButton'>Retake</button> <p id='newQuizAd'>To take a different quiz click on User Page button</p> ";
+        	var usersArray = [];
+        	var currentUser;
+
+//
+//
+//
+//----------------------------------------------------  Functions  ---------------------------------------------------------------
+//
+//
+            function PrevButtonMaker() {
+                function PrevButton() {
+                    this.historyArray = [];
+                    this.pageArray = [loginPage, userPage, quizManagerMakePage, quizMakerPage, mCQuestionPage, tFQuestionPage];
+                    if(this.historyArray.length > 10) {
+                        this.historyArray.shift();
+                    }
+                }
+
+                PrevButton.prototype.setPageHistory = function(pageNumber) {
+                    this.historyArray.push(pageNumber);
+                }
+
+                PrevButton.prototype.makePageLoad = function() {
+                    return this.pageArray[this.historyArray[this.historyArray.length - 2]];
+                }
+
+                PrevButton.prototype.loadPage = function(page) {
+                    this.historyArray.pop();
+                    return page();
+                }
+
+                var instance = new PrevButton();
+                return instance;
+            }
+
+            var prevButton = PrevButtonMaker();
+
+			function storeUsersArray() {
+				//-- look for an object in usersArray with same username 
+				compareItemsInArray(usersArray, 0, currentUser.username , "username",
+					//-- if found, callback overwrites usersArray object at that index with current user info
+					function(index) {
+					usersArray[index] = currentUser;
+					//-- stores usersArray into local memory
+					localStorage.setItem("usersArray", JSON.stringify(usersArray));
+			} , //-- if not found, is pushed into usersArray and stored into local memory
+					function(index) {usersArray.push(currentUser);
+					localStorage.setItem("usersArray", JSON.stringify(usersArray));
+				});
+	        }
+			function getUsersArray() {
+			        function a() {
+			        	var a = localStorage.getItem("usersArray");
+			        	var b = JSON.parse(a);
+			        	var c = [];
+			        	for(i = 0; i < b.length; i++) {  // for each object in b a newUser object is created.
+			        		var d = NewUserMaker(b[i].username);
+			        		for(j = 0; j < b[i].quizArray.length; j++) { // for each object, the quizzes are made
+			        			var e = NewQuizMaker(b[i].quizArray[j].quizName);
+			        				for(h = 0; h < b[i].quizArray[j].questionArray.length; h++) { // for each quiz, the question objects are made
+                                        if(b[i].quizArray[j].questionArray[h].questionType == "m") { // if the questionType is "m" it creates a multiple choice question and pushes it to the quiz.questionArray
+    			        					var f = NewMCQuestionMaker(b[i].quizArray[j].questionArray[h].qBox, b[i].quizArray[j].questionArray[h].cBoxArray, b[i].quizArray[j].questionArray[h].aBox);
+    			        					e.questionArray.push(f);
+                                        } else if(b[i].quizArray[j].questionArray[h].questionType == "t") { // if the questionType is "t" it creates a true false question and pushes it to the quiz.questionArray
+                                            var f = NewTFQuestionMaker(b[i].quizArray[j].questionArray[h].qBox, b[i].quizArray[j].questionArray[h].trueRadio, b[i].quizArray[j].questionArray[h].falseRadio, b[i].quizArray[j].questionArray[h].aBox);
+                                            e.questionArray.push(f);
+                                        }
+			        				}
+			        			d.quizArray.push(e); // each quiz object is pushed to user.quizArray
+			        		}
+			        		c.push(d); // each user object is pushed into the c array
+			        	};
+			        	return c;
+			        }
+
+			        return usersArray = a(); // the c array with all the user objects is loaded into usersArray
+			}
+
+        	function compareItemsInArray(arrayToUse, index, lookFor, propertyToUse, foundCallback, elseCallback) {
+                if(index < arrayToUse.length){
+                    var checker = arrayToUse[index];
+                    if(checker[propertyToUse] == lookFor) {
+                        return foundCallback(index);
+                    } else {
+                        var newIndex = index + 1;
+                        return index * compareItemsInArray(arrayToUse, newIndex, lookFor, propertyToUse, foundCallback, elseCallback);
+                    }
+                } else {
+                    return elseCallback();
+                }
+            }
+
+	        function NewUserMaker(username) {
+        		function NewUser(username){
+        			this.username = username;
+        			this.quizArray = [];
+        			this.quizIndex = 0;
+        			this.questionIndex = 0;
+                    this.answerArray = [];
+        		}
+
+        		NewUser.prototype.setQuizIndex = function(r) {
+        			this.quizIndex = r;
+        		}
+
+        		NewUser.prototype.getQuizIndex = function() {
+        			return this.quizIndex;
+        		}
+
+        		NewUser.prototype.setQuestionIndex = function(r) {
+        			this.questionIndex = r;
+        		}
+
+        		NewUser.prototype.getQuestionIndex = function() {
+        			return this.questionIndex;
+        		}
+
+                NewUser.prototype.addToAnswerArray = function(r) {
+                    this.answerArray.push(r);
+                }
+
+                NewUser.prototype.getAnswerArray = function() {
+                    return this.answerArray;
+                }
+
+                NewUser.prototype.resetAnswerArray = function() {
+                    this.answerArray = [];
+                }
+
+        		var instance = new NewUser(username);
+        		return instance;
+        	}
+
+        	function NewQuizMaker(quizName) {
+        		function NewQuiz(quizName){
+        			this.quizName = quizName;
+        			this.questionArray = [];
+                    this.answerKey = [];
+        		}
+
+                NewQuiz.prototype.createAnswerKey = function() {
+                    var a = this.answerKey;
+                    var b = this.questionArray;
+                        for(i = 0; i < b.length; i++) {
+                            a.push(b[i].aBox);
+                        }
+                    this.answerKey = a;
+                }
+
+                NewQuiz.prototype.getAnswerKey = function() {
+                    return this.answerKey;
+                }
+
+        		var instance = new NewQuiz(quizName);
+        		return instance;
+        	}
+
+        	function NewMCQuestionMaker(a, b, c) {
+        		function NewMCQuestion(){
+        			this.qBox = a;
+        			this.cBoxArray = b;
+        			this.aBox = c;
+                    this.questionType = "m";
+                    this.questionStatus = "new";
+        		}
+
+                NewMCQuestion.prototype.setQuestionStatus = function(status) {
+                    this.questionStatus = status;
+                }
+
+                NewMCQuestion.prototype.getQuestionStatus = function() {
+                    return this.questionStatus;
+                }
+
+        		var instance = new NewMCQuestion();
+        		return instance;
+        	}
+
+            function NewTFQuestionMaker(a, b, c, d) {
+                function NewTFQuestion(){
+                    this.qBox = a;
+                    this.trueRadio = b;
+                    this.falseRadio = c;
+                    this.aBox = d;
+                    this.questionType = "t";
+                    this.questionStatus = "new";
+                }
+
+                NewTFQuestion.prototype.setQuestionStatus = function(status) {
+                    this.questionStatus = status;
+                }
+
+                NewTFQuestion.prototype.getQuestionStatus = function() {
+                    return this.questionStatus;
+                }
+
+                NewTFQuestion.prototype.setABox = function() {
+                    if(this.trueRadio == true) {
+                        this.aBox = "True";
+                    } else {
+                        this.aBox = "False";
+                    };
+                }
+
+                var instance = new NewTFQuestion();
+                return instance;
+            }
+
+        	function login(userNameTextBox, newOrUsed) {
+        		getUsersArray(); //-- sets usersArray to localStorage
+        		if(newOrUsed == "used") {
+        			function loginUsedErrorMessage() {
+        				$('#existingUserMessage').empty();
+        				$('#existingUserMessage').text("Sorry, your username was not found.");
+        			}
+        			compareItemsInArray(usersArray, 0, userNameTextBox, "username", function(index) {userIndex = index;
+        				loginUser(usersArray[userIndex]);
+        				userPage();}, loginUsedErrorMessage);
+        		} else  if(newOrUsed == "new") {
+		        			function loginNewErrorMessage() {
+		        				$('#existingUserMessage').empty();
+		        				$('#existingUserMessage').text("Sorry, that username is not available.");
+		        			}
+		        			compareItemsInArray(usersArray, 0, "username", userNameTextBox, loginNewErrorMessage, function() {
+		        				var newUser = NewUserMaker($('#newUserBox').val());
+		        				usersArray.push(newUser);
+		        				loginUser(newUser);
+		        				storeUsersArray();
+		        				getUsersArray();
+		        				userPage();
+		        			});
+        				}
+        	}
+
+
+	        function loginUser(user) {
+	        	return currentUser = user;
+        	}
+
+        	function makeButton(buttonType, idName, className, valueName, targetID) {  // idName and targetID both need "#" included.
+	            if(buttonType == "button") {
+	              $(targetID).append("<button id=" + idName + " class=" + className + " value=" + valueName + ">" + valueName + "</button> ");
+	            } else if(buttonType == "submit") {
+	              $(targetID).append("<button type=" + buttonType + " id=" + idName + " class=" + className + " value=" + valueName + ">" + valueName + "</button> ");
+	            }
+           	}
+
+        	function scrollingContainer(arrayToUse, propertyToUse, buttonEventCallback) {
+        		for(i = 0; i < arrayToUse.length; i++) {
+        			makeButton("button", i, "items", arrayToUse[i][propertyToUse], "#scrollingContainerDiv");
+        			function a(index) {
+        				function b() {
+        					buttonEventCallback(index);
+        				}
+        				return b;
+        			}
+                    var c;
+        			buttonEvent("#" + i, c = a(i));
+        		}
+	        }
+
+        	function pageLoad(title, pageContents){
+        		$("#title,#contentContainer").empty();
+        		$("#title").html(title);
+        		$("#contentContainer").html(pageContents);
+        	}
+
+        	function buttonEvent(buttonID, eventCallback) {
+	            $(buttonID).unbind().click(eventCallback);
+          	}
+
+          	function setMCQuestionObject() {
+          		var qBox = $("#qBox").val();
+          		var c1Box = $("#c1Box").val();
+          		var c2Box = $("#c2Box").val();
+          		var c3Box = $("#c3Box").val();
+          		var c4Box = $("#c4Box").val();
+          		var aBox = $("#aBox").val();
+          		var cBoxArraySet = [c1Box, c2Box, c3Box, c4Box];
+          		var questionObject = NewMCQuestionMaker(qBox, cBoxArraySet, aBox);
+          		currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()] = questionObject;
+          		storeUsersArray();
+          	}
+
+            function setTFQuestionObject() {
+                var qBox = $("#qBox").val();
+                var trueRadio = $("#trueRadio").prop("checked");
+                var falseRadio = $("#falseRadio").prop("checked");
+                var questionObject = NewTFQuestionMaker(qBox, trueRadio, falseRadio);
+                currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()] = questionObject;
+                currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()].setABox();
+                storeUsersArray();
+            }
+
+        	function newQuizSetter() {
+        			var currentUserIndex = currentUser.quizArray.length;
+        			currentUser.setQuizIndex(currentUserIndex);
+        			currentUser.quizArray[currentUser.getQuizIndex()].quizName = $("#quizName").val();
+        			storeUsersArray();
+        		}
+            function oldQuizSetter() {
+                currentUser.quizArray[currentUser.getQuizIndex()].quizName = $("#quizName").val();
+                storeUsersArray();
+            }
+
+                
+                
+//
+//
+//
+//
+//-------------------------------------------------  Program Pages  -----------------------------------------------
+//
+//
+//
+        	function loginPage() {
+                prevButton.setPageHistory(0);
+        		if(localStorage.getItem("usersArray") === null) {  //--if there is no slot in localStorage called usersArray, then a slot is made with that name.
+        			localStorage.setItem("usersArray", JSON.stringify(usersArray));
+        		}
+        		pageLoad(loginPageTitle, loginPageContents); //-- loads page title and contents
+        		buttonEvent('#loginUserButton', function() {login($('#existingUserBox').val(), "used");}); //-- sets a handler on the click event of loginUserButton with callback to login. Login stores the value of existingUserBox and runs the "used" flow of login
+        		buttonEvent('#createUserButton', function() {login($('#newUserBox').val(), "new");}); //-- sets a handler on the click event of createUserButton with callback to login. Login stores the value of newUserBox and runs the "new" flow of login
+        		buttonEvent('#quitButton', function() {
+        		location.reload();}); //-- sets the handler on the click event for the quitButton. This saves all data in reloads the program
+        	}
+
+
+        	function userPage() {
+                prevButton.setPageHistory(1);
+                buttonEvent("#prevButton", function() {
+                    prevButton.loadPage(prevButton.makePageLoad());
+                });
+                buttonEvent("#userPageButton", function() {
+                    storeUsersArray();
+                    userPage();
+                });
+        		pageLoad("Welcome " + currentUser.username + "!", userPageContents); //-- loads page title and contents with a friendly welcome
+        		buttonEvent("#makeQuizButton", quizManagerMakePage);
+                buttonEvent("#takeQuizButton", function(){currentUser.quizArray[currentUser.getQuizIndex()].createAnswerKey(); quizManagerTakePage();});
+        	}
+
+            function quizManagerTakePage() {
+                prevButton.setPageHistory(6);
+                pageLoad(currentUser.username, quizManagerMakePageContents);
+                $("#contentContainer").append("<div id='scrollingContainerDiv'></div> "); //--scrollingContainer(arrayToUse, index, propertyToUse, buttonEventCallback)
+                scrollingContainer(currentUser.quizArray, "quizName", function(index) {currentUser.setQuizIndex(index); quizTakerPage();});
+            }
+
+            function quizTakerPage() {
+                currentUser.setQuestionIndex(0);
+                currentUser.resetAnswerArray();
+                var currentQuestionObject = currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()];
+                var questionArrayCollectionBasket = [];
+
+                function mCPuller() {
+                        for(var propt in currentQuestionObject) {
+                            if(currentQuestionObject.hasOwnProperty(propt)) {
+                                if(propt == "qBox") {
+                                    questionArrayCollectionBasket.push(currentQuestionObject.qBox);
+                                } else if(propt == "cBoxArray") {
+                                    for(i = 0; i < currentQuestionObject.cBoxArray.length; i++) {
+                                        questionArrayCollectionBasket.push(currentQuestionObject.cBoxArray[i]);
+                                    }
+                                } else if(propt == "aBox") {
+                                    questionArrayCollectionBasket.push(currentQuestionObject.aBox);
+                                }
+                            }
+                        }
+                    }
+
+                function mCPusher() {
+                    for(i = 0; i < questionArrayCollectionBasket.length; i++) {
+                        switch(i) {
+                            case 0:
+                                $("#questionDisplay").html(currentUser.getQuestionIndex() + 1 + ".  ");
+                                $("#questionDisplay").append(questionArrayCollectionBasket[0]);
+                                break;
+                            case 1:
+                                $("#c1P").html(questionArrayCollectionBasket[1]);
+                                break;
+                            case 2:
+                                $("#c2P").html(questionArrayCollectionBasket[2]);
+                                break;
+                            case 3:
+                                $("#c3P").html(questionArrayCollectionBasket[3]);
+                                break;
+                            case 4:
+                                $("#c4P").html(questionArrayCollectionBasket[4]);
+                                break;
+                            case 5:
+                                questionArrayCollectionBasket = [];
+                                break;
+                        }
+                    }
+                }
+
+                function storeAnswer() {
+                    var idArray = ["#c1Radio", "#c2Radio", "#c3Radio", "#c4Radio"];
+                    var empty;
+                    if(currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()].questionType == "t") {
+                        for(i = 0; i < 2; i++) {
+                            if($(idArray[i]).is(":checked")) {
+                                currentUser.addToAnswerArray($(idArray[i]).next().text());
+                                empty = i;
+                            }
+                        }
+                    } else if(currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()].questionType == "m") {
+                        for(i = 0; i < idArray.length; i++) {
+                            if($(idArray[i]).is(":checked")) {
+                                currentUser.addToAnswerArray($(idArray[i]).next().text());
+                                empty = i;
+                            }
+                        }
+                    }
+                    if(empty == undefined) {
+                        alert("Must answer question to continue.");
+                        return;
+                    }
+                    currentUser.setQuestionIndex(currentUser.getQuestionIndex() + 1);
+                    currentQuestionObject = currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()];
+                }
+
+                function loadContents() {
+                    if(currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()].questionType == "t") {
+                        pageLoad(currentUser.quizArray[currentUser.getQuizIndex()].quizName, tFTakePageContents);
+                    } else if(currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()].questionType == "m") {
+                        pageLoad(currentUser.quizArray[currentUser.getQuizIndex()].quizName, mCTakePageContents);
+                    }
+                    if(currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()].questionType == "t") {
+                        $("#questionDisplay").text(currentUser.getQuestionIndex() + 1 + ".  ");
+                        $("#questionDisplay").append(currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()].qBox);
+                    } else if(currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()].questionType == "m") {
+                        mCPuller();
+                        mCPusher();
+                    }
+                    
+                    buttonEvent("#nextButton", function() {
+                        if(currentUser.quizArray[currentUser.getQuizIndex()].questionArray.length == currentUser.getQuestionIndex() + 1) {
+                            storeAnswer(); 
+                            scorePage();
+                        } else {
+                            storeAnswer(); 
+                            loadContents();
+                        }
+                    });
+                }
+
+                
+                
+                loadContents();;
+            }
+
+            function scorePage() {
+                pageLoad(currentUser.quizArray[currentUser.getQuizIndex()].quizName, scorePageContents)
+                var correctArray = [];
+                for(i = 0; i < currentUser.quizArray[currentUser.getQuizIndex()].questionArray.length; i++) {
+                    if(currentUser.quizArray[currentUser.getQuizIndex()].answerKey[i] == currentUser.answerArray[i]) {
+                        correctArray.push(currentUser.answerArray[i]);
+                    }
+                }
+
+                function percentage() {
+                    var correctScore = Math.floor(correctArray.length/currentUser.quizArray[currentUser.getQuizIndex()].questionArray.length * 100);
+                    return correctScore + "%";
+                }
+
+                $("#quizScore").text(percentage());
+
+                buttonEvent("#retakeButton", quizTakerPage);
+
+            }
+
+        	function quizManagerMakePage() {
+                prevButton.setPageHistory(2);
+        		pageLoad(currentUser.username, quizManagerMakePageContents);
+        		makeButton("button", "newQuizButton", "none", "New Quiz", "#contentContainer");
+        		buttonEvent("#newQuizButton", function() {
+        			var newQuiz = NewQuizMaker();
+        			currentUser.quizArray.push(newQuiz);
+        			currentUser.setQuizIndex(currentUser.quizArray.length - 1);
+        			storeUsersArray();
+        			quizMakerPage();
+        		});
+        		$("#contentContainer").append("<div id='scrollingContainerDiv'></div> "); //--scrollingContainer(arrayToUse, index, propertyToUse, buttonEventCallback)
+        		scrollingContainer(currentUser.quizArray, "quizName", function(index) {currentUser.setQuizIndex(index); quizMakerPage();});
+        	}
+
+
+        	function quizMakerPage() {
+                prevButton.setPageHistory(3);
+        		var currentQuizIndex = currentUser.getQuizIndex();
+        		var iffer = function() {
+        			if(currentUser.quizArray[currentQuizIndex].quizName == undefined) { 
+	        			return currentUser.username;
+	        		} else { 
+	        			return currentUser.quizArray[currentQuizIndex].quizName;
+	        		}
+	        	}
+        		pageLoad(iffer(), quizMakerPageContents);
+        		if(currentUser.quizArray[currentQuizIndex].quizName === undefined){
+        			$("#quizName").attr("value", "Quiz Name");
+        		} else {
+        			$("#quizName").attr("value", currentUser.quizArray[currentQuizIndex].quizName);
+        		}
+        		makeButton("button", "tFButton", "none", "T/F", "#contentContainer");
+        		buttonEvent("#tFButton", function() {oldQuizSetter(); currentUser.setQuestionIndex(currentUser.quizArray[currentUser.getQuizIndex()].questionArray.length); setTFQuestionObject(); tFQuestionPage();});
+        		makeButton("button", "mCButton", "none", "MC", "#contentContainer");
+        		buttonEvent("#mCButton", function() {oldQuizSetter(); currentUser.setQuestionIndex(currentUser.quizArray[currentUser.getQuizIndex()].questionArray.length); setMCQuestionObject(); mCQuestionPage();});
+
+        		$("#contentContainer").append("<div id='scrollingContainerDiv'></div> ");
+        		scrollingContainer(currentUser.quizArray[currentQuizIndex].questionArray, "qBox", function(index) {currentUser.setQuestionIndex(index); 
+                    if(currentUser.quizArray[currentQuizIndex].questionArray[currentUser.getQuestionIndex()].questionType == "m"){
+                    currentUser.quizArray[currentQuizIndex].questionArray[currentUser.getQuestionIndex()].setQuestionStatus("not");
+                    mCQuestionPage();
+                } else if(currentUser.quizArray[currentQuizIndex].questionArray[currentUser.getQuestionIndex()].questionType == "t") {
+                    currentUser.quizArray[currentQuizIndex].questionArray[currentUser.getQuestionIndex()].setQuestionStatus("not");
+                    tFQuestionPage();
+                }});
+        		makeButton("button", "quizSubmitButton", "submit", "Submit", "#contentContainer");
+        		buttonEvent("#quizSubmitButton", function() {
+        			compareItemsInArray(currentUser.quizArray, 0, "quizName", $("#quizName").val(), function() {
+        				alert("That quiz name is already in use. Please choose another.");
+        				quizMakerPage();}, function() {oldQuizSetter();  quizManagerMakePage();});
+        		});
+        	}
+
+        	function mCQuestionPage() {
+                prevButton.setPageHistory(4);
+                var currentQuestionObject = currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()];
+                var questionArrayCollectionBasket = [];
+                function puller() {
+                    for(var propt in currentQuestionObject) {
+                        if(currentQuestionObject.hasOwnProperty(propt)) {
+                            if(propt == "qBox") {
+                                questionArrayCollectionBasket.push(currentQuestionObject.qBox);
+                            } else if(propt == "cBoxArray") {
+                                for(i = 0; i < currentQuestionObject.cBoxArray.length; i++) {
+                                    questionArrayCollectionBasket.push(currentQuestionObject.cBoxArray[i]);
+                                }
+                            } else if(propt == "aBox") {
+                                questionArrayCollectionBasket.push(currentQuestionObject.aBox);
+                            }
+                        }
+                    }
+                }
+                function pusher() {
+                    for(i = 0; i < questionArrayCollectionBasket.length; i++) {
+                        switch(i) {
+                            case 0:
+                                $("#qBox").attr("value", questionArrayCollectionBasket[0]);
+                                break;
+                            case 1:
+                                $("#c1Box").attr("value", questionArrayCollectionBasket[1]);
+                                break;
+                            case 2:
+                                $("#c2Box").attr("value", questionArrayCollectionBasket[2]);
+                                break;
+                            case 3:
+                                $("#c3Box").attr("value", questionArrayCollectionBasket[3]);
+                                break;
+                            case 4:
+                                $("#c4Box").attr("value", questionArrayCollectionBasket[4]);
+                                break;
+                            case 5:
+                                $("#aBox").attr("value", questionArrayCollectionBasket[5]);
+                                break;
+                        }
+                    }
+                }
+                function newPusher() {
+                    for(i = 0; i < 7; i++) {
+                        switch(i) {
+                            case 0:
+                                $("#qBox").attr("placeholder", "Type question here.");
+                                break;
+                            case 1:
+                                $("#c1Box").attr("placeholder", "Type choice 1 here.");
+                                break;
+                            case 2:
+                                $("#c2Box").attr("placeholder", "Type choice 2 here.");
+                                break;
+                            case 3:
+                                $("#c3Box").attr("placeholder", "Type choice 3 here.");
+                                break;
+                            case 4:
+                                $("#c4Box").attr("placeholder", "Type choice 4 here.");
+                                break;
+                            case 5:
+                                $("#aBox").attr("placeholder", "Type correct answer here.");
+                                break;
+                        }
+                    }
+                }
+        		pageLoad(currentUser.quizArray[currentUser.getQuizIndex()].quizName, mCQuestionFormPageContents);
+                if(currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()].getQuestionStatus() == "new") {
+                    newPusher();
+                } else {
+                    puller();
+                    pusher();
+                }
+        		buttonEvent("#questionFormSubmit", function() {setMCQuestionObject();
+                    quizMakerPage();});
+        	}
+
+        	function tFQuestionPage() {
+                prevButton.setPageHistory(5);
+                var currentQuestionObject = currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()];
+                var questionArrayCollectionBasket = [];
+                function puller() {
+                    for(var propt in currentQuestionObject) {
+                        if(currentQuestionObject.hasOwnProperty(propt)) {
+                            if(propt == "qBox") {
+                                questionArrayCollectionBasket.push(currentQuestionObject.qBox);
+                            } else if(propt == "trueRadio") {
+                                    questionArrayCollectionBasket.push(currentQuestionObject.trueRadio);
+                            } else if(propt == "falseRadio") {
+                                questionArrayCollectionBasket.push(currentQuestionObject.falseRadio);
+                            }
+                        }
+                    }
+                }
+                
+                function pusher() {
+                    for(i = 0; i < questionArrayCollectionBasket.length; i++) {
+                        switch(i) {
+                            case 0:
+                                $("#qBox").attr("value", questionArrayCollectionBasket[0]);
+                                break;
+                            case 1:
+                                if(questionArrayCollectionBasket[1] == true) {
+                                    $("#trueRadio").prop("checked", true);
+                                };
+                                break;
+                            case 2:
+                                if(questionArrayCollectionBasket[2] == true) {
+                                    $("#falseRadio").prop("checked", true);
+                                };
+                                break;
+                        }
+                    }
+                }
+                function newPusher() {
+                    $("#qBox").attr("placeholder", "Type question here.");
+                    }
+        		pageLoad(currentUser.quizArray[currentUser.getQuizIndex()].quizName, tFQuestionFormPageContents);
+                var questionStatus = currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()];
+                if(questionStatus.getQuestionStatus() == "new") {
+                    newPusher();
+                } else {
+                    puller();
+                    pusher();
+                }
+        		buttonEvent("#questionFormSubmit", function() {setTFQuestionObject();
+                    quizMakerPage();});
+        	}
+
+//
+//
+//
+//------------------------------------------------------  Program Begins  ------------------------------------------------
+//
+//
+//
+
+        	loginPage();
+        }
+
+
+
+
+//------------------------------------------------------  Run Program  ----------------------------------------------------
+
+
+        main();
+
+
+
+        // Main Page
+        	// Main Window Object
+        // User Page
+        // Quiz Page
+        // New Quiz Page
+        // Add MCQuestion Page
+        // Add TFQuestion Page
+
+        </script>
+    </body>
+</html>
