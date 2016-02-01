@@ -9,7 +9,6 @@ Thanks to those whose dedication and intelligence have made it better to navigat
 
 ##My Projects Thus Far
 Shadowfax: A Text Mini-Adventure  
-Breaker  
 InQuizition
 
 ##Tech used
