@@ -463,15 +463,13 @@
         				$('#existingUserMessage').empty();
         				$('#existingUserMessage').text("Sorry, your username was not found.");
         			}
-        			compareItemsInArray(usersArray, 0, userNameTextBox, "username", function(index) {userIndex = index;
-        				loginUser(usersArray[userIndex]);
-        				userPage();}, loginUsedErrorMessage);
+        			compareItemsInArray(usersArray, 0, userNameTextBox, "username", function(index) {userIndex = index; loginUser(usersArray[userIndex]); userPage();}, loginUsedErrorMessage);
         		} else  if(newOrUsed == "new") {
 		        			function loginNewErrorMessage() {
-		        				$('#existingUserMessage').empty();
-		        				$('#existingUserMessage').text("Sorry, that username is not available.");
+		        				$('#newUserMessage').empty();
+		        				$('#newUserMessage').text("Sorry, that username is not available.");
 		        			}
-		        			compareItemsInArray(usersArray, 0, "username", userNameTextBox, loginNewErrorMessage, function() {
+		        			compareItemsInArray(usersArray, 0, userNameTextBox, "username", loginNewErrorMessage, function() {
 		        				var newUser = NewUserMaker($('#newUserBox').val());
 		        				usersArray.push(newUser);
 		        				loginUser(newUser);
