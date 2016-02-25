@@ -11,6 +11,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script>window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"><\/script>')</script>
 
+<!-------------------------   CSS   ------------------------------------>
 		<style>
 			#mainPageContainer {
 	          width: 400px;
@@ -212,13 +213,15 @@
 
         </style>
 
+<!-----------------------------------  End CSS   ------------------------------------ -->
+
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     </head>
     <body>
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-
+<!-----------------------------------   HTML Page Template   ------------------------ -->
       <div id='mainPageContainer'>
       	<h2 id='title'></h2>
       	<div id='contentContainer'></div>
@@ -227,6 +230,8 @@
       	<button id='quitButton' class='footerButton' value='Quit'>Quit</button>
         
       </div>
+
+<!----------------------------------   End HTML Page Template   ------------------------ -->
 
         <script>
 
@@ -257,7 +262,9 @@
 //----------------------------------------------------  Functions  ---------------------------------------------------------------
 //
 //
-            function PrevButtonMaker() {
+            
+
+            function PrevButtonMaker() {   //-- Previous button object. Each page has a number that corresponds to an index in an array. The page number is stored in the historyArray each time visited
                 function PrevButton() {
                     this.historyArray = [];
                     this.pageArray = [loginPage, userPage, quizManagerMakePage, quizMakerPage, mCQuestionPage, tFQuestionPage];
@@ -326,7 +333,7 @@
 			        return usersArray = a(); // the c array with all the user objects is loaded into usersArray
 			}
 
-        	function compareItemsInArray(arrayToUse, index, lookFor, propertyToUse, foundCallback, elseCallback) {
+        	function compareItemsInArray(arrayToUse, index, lookFor, propertyToUse, foundCallback, elseCallback) {   //-- For a given array, compare array value against a specified one and if found do something, or if not found, do something.
                 if(index < arrayToUse.length){
                     var checker = arrayToUse[index];
                     if(checker[propertyToUse] == lookFor) {
@@ -340,7 +347,7 @@
                 }
             }
 
-	        function NewUserMaker(username) {
+	        function NewUserMaker(username) {   //-- NewUser object with methods associated with quizzes, questions, and answers
         		function NewUser(username){
         			this.username = username;
         			this.quizArray = [];
@@ -381,7 +388,7 @@
         		return instance;
         	}
 
-        	function NewQuizMaker(quizName) {
+        	function NewQuizMaker(quizName) {   //-- Quiz object. The answer key is handled in it's methods
         		function NewQuiz(quizName){
         			this.quizName = quizName;
         			this.questionArray = [];
@@ -405,7 +412,7 @@
         		return instance;
         	}
 
-        	function NewMCQuestionMaker(a, b, c) {
+        	function NewMCQuestionMaker(a, b, c) {   //-- Multiple choice question object
         		function NewMCQuestion(){
         			this.qBox = a;
         			this.cBoxArray = b;
@@ -426,7 +433,7 @@
         		return instance;
         	}
 
-            function NewTFQuestionMaker(a, b, c, d) {
+            function NewTFQuestionMaker(a, b, c, d) {   //-- True/false question object
                 function NewTFQuestion(){
                     this.qBox = a;
                     this.trueRadio = b;
@@ -456,7 +463,7 @@
                 return instance;
             }
 
-        	function login(userNameTextBox, newOrUsed) {
+        	function login(userNameTextBox, newOrUsed) {   //-- Login function for new or returning users. Checks for the username and creates new user object instance for new user.
         		getUsersArray(); //-- sets usersArray to localStorage
         		if(newOrUsed == "used") {
         			function loginUsedErrorMessage() {
@@ -481,7 +488,7 @@
         	}
 
 
-	        function loginUser(user) {
+	        function loginUser(user) {   //-- loads returning users info into program
 	        	return currentUser = user;
         	}
 
@@ -493,7 +500,7 @@
 	            }
            	}
 
-        	function scrollingContainer(arrayToUse, propertyToUse, buttonEventCallback) {
+        	function scrollingContainer(arrayToUse, propertyToUse, buttonEventCallback) {   //-- creates buttons based on a specified property for values in an array
         		for(i = 0; i < arrayToUse.length; i++) {
         			makeButton("button", i, "items", arrayToUse[i][propertyToUse], "#scrollingContainerDiv");
         			function a(index) {
@@ -507,17 +514,17 @@
         		}
 	        }
 
-        	function pageLoad(title, pageContents){
+        	function pageLoad(title, pageContents){   //-- Modifies the title and content for each page
         		$("#title,#contentContainer").empty();
         		$("#title").html(title);
         		$("#contentContainer").html(pageContents);
         	}
 
-        	function buttonEvent(buttonID, eventCallback) {
+        	function buttonEvent(buttonID, eventCallback) {   
 	            $(buttonID).unbind().click(eventCallback);
           	}
 
-          	function setMCQuestionObject() {
+          	function setMCQuestionObject() {   //-- sets all question text-box values to a var and populates the mcquestion object with them
           		var qBox = $("#qBox").val();
           		var c1Box = $("#c1Box").val();
           		var c2Box = $("#c2Box").val();
@@ -530,7 +537,7 @@
           		storeUsersArray();
           	}
 
-            function setTFQuestionObject() {
+            function setTFQuestionObject() {  //-- same as mcquestion but records value of checked radio button
                 var qBox = $("#qBox").val();
                 var trueRadio = $("#trueRadio").prop("checked");
                 var falseRadio = $("#falseRadio").prop("checked");
@@ -540,13 +547,13 @@
                 storeUsersArray();
             }
 
-        	function newQuizSetter() {
+        	function newQuizSetter() {  //-- stores name of quiz
         			var currentUserIndex = currentUser.quizArray.length;
         			currentUser.setQuizIndex(currentUserIndex);
         			currentUser.quizArray[currentUser.getQuizIndex()].quizName = $("#quizName").val();
         			storeUsersArray();
         		}
-            function oldQuizSetter() {
+            function oldQuizSetter() {  //-- stores modified quiz name
                 currentUser.quizArray[currentUser.getQuizIndex()].quizName = $("#quizName").val();
                 storeUsersArray();
             }
