@@ -39,10 +39,6 @@
 	        	margin-top: 65px;
 	        }
 
-	        #main, #submit {
-
-	        }
-
 	        .footerButton {
 	        	position: absolute;
 	        	text-align: center;
@@ -235,380 +231,581 @@
 
         <script>
 
-        //
-        //
-        //
-        //----------------------------------------------------  Main  -----------------------------------------------------------
+//
+//
+//
+//----------------------------------------------------  Main  -----------------------------------------------------------
+        
+    // This is the main program function where all the program code is housed.
+        
         //---------------------------------------------------- Variables  -------------------------------------------------------
+        
+        // Public variables and each page's html structure placed in variables.
+            function main() {
+            	var loginPageTitle = "InQuizitor";
+            	var loginPageContents = "<p id='existingUserMessage'>Existing users please sign in</p> <input id='existingUserBox'  type='text' placeholder='Username' /> <button id='loginUserButton'>Log In</button> <p id='newUserMessage'>New user?</br> Create new username</p> <input id='newUserBox' type='text' placeholder='New Username' /> <button id='createUserButton'>Create</button>"
+            	var userPageContents = "<button id='makeQuizButton'>Make Quiz</button></br><button id='takeQuizButton'>Take Quiz</button>";
+            	var quizManagerMakePageContents = "";
+            	var quizMakerPageContents = "<input id='quizName' type='text' value='' /> ";
+            	var mCQuestionFormPageContents = "<form id='mCQuestionForm'><p class='boldy'>Question: </p> <input id='qBox' type='text' value='' /></br> <p>Choice 1: </p><input id='c1Box' type='text' value='' /></br> <p>Choice 2: </p><input id='c2Box' type='text' value='' /></br> <p>Choice 3: </p><input id='c3Box' type='text' value='' /></br> <p>Choice 4: </p><input id='c4Box' type='text' value='' /></br> <p>Correct Answer: </p><input id='aBox' type='text' value='' /></br> <button id='questionFormSubmit' type='button' class='submit' value='Submit'>Submit</button></form>";
+            	var tFQuestionFormPageContents = "<form id='mCQuestionForm'> <p class='boldy'>Question: </p> <input id='qBox' type='text' value='Type question here.' /></br><input id='trueRadio' type='radio' name='chum'><p id='trueP'>True</p></input></br> <input id='falseRadio' type='radio' name='chum'><p id='falseP'>False</p></input></br> <button id='questionFormSubmit' type='button' class='submit' value='Submit'>Submit</button> </form>";
+                var quizManagerTakePageContents = "";
+                var tFTakePageContents = "<p id='questionDisplay' class='quizTaker' ></p> <div id='questionDiv' class='quizTaker'> <div class='testDiv'><input id='c1Radio' type='radio' name='chum'> <label id='c1P' for='c1Radio' >True</label><br> </div> <div class='testDiv'> <input id='c2Radio' type='radio' name='chum'> <label id='c2P' for='c2Radio' >False</label><br> </div> </div> <p id='questionNumber' class='quizTaker' ></p> <button id='nextButton'>Next ></button> ";
+                var mCTakePageContents = "<p id='questionDisplay' class='quizTaker' ></p> <div id='questionDiv' class='quizTaker'> <div class='testDiv'><input id='c1Radio' type='radio' name='chum'> <label id='c1P' for='c1Radio' ></label><br> </div> <div class='testDiv'> <input id='c2Radio' type='radio' name='chum'> <label id='c2P' for='c2Radio' ></label><br> </div> <div class='testDiv'> <input id='c3Radio' type='radio' name='chum'> <label id='c3P' for='c3Radio' ></label><br></div> <div class='testDiv'> <input id='c4Radio' type='radio' name='chum'> <label id='c4P' for='c4Radio' ></label> <br></div></div> <p id='questionNumber' class='quizTaker' ></p> <button id='nextButton'>Next ></button> ";
+                var scorePageContents = "<h1 id='scoreTitle' >Quiz Score</h1> <p id='quizScore'></p> <p id='xOfX'></p> <button id='retakeButton'>Retake</button> <p id='newQuizAd'>To take a different quiz click on User Page button</p> ";
+            	var usersArray = [];
+            	var currentUser;
 
-        function main() {
-        	var loginPageTitle = "InQuizitor";
-        	var loginPageContents = "<p id='existingUserMessage'>Existing users please sign in</p> <input id='existingUserBox'  type='text' placeholder='Username' /> <button id='loginUserButton'>Log In</button> <p id='newUserMessage'>New user?</br> Create new username</p> <input id='newUserBox' type='text' placeholder='New Username' /> <button id='createUserButton'>Create</button>"
-        	var userPageContents = "<button id='makeQuizButton'>Make Quiz</button></br><button id='takeQuizButton'>Take Quiz</button>";
-        	var quizManagerMakePageContents = "";
-        	var quizMakerPageContents = "<input id='quizName' type='text' value='' /> ";
-        	var mCQuestionFormPageContents = "<form id='mCQuestionForm'><p class='boldy'>Question: </p> <input id='qBox' type='text' value='' /></br> <p>Choice 1: </p><input id='c1Box' type='text' value='' /></br> <p>Choice 2: </p><input id='c2Box' type='text' value='' /></br> <p>Choice 3: </p><input id='c3Box' type='text' value='' /></br> <p>Choice 4: </p><input id='c4Box' type='text' value='' /></br> <p>Correct Answer: </p><input id='aBox' type='text' value='' /></br> <button id='questionFormSubmit' type='button' class='submit' value='Submit'>Submit</button></form>";
-        	var tFQuestionFormPageContents = "<form id='mCQuestionForm'> <p class='boldy'>Question: </p> <input id='qBox' type='text' value='Type question here.' /></br><input id='trueRadio' type='radio' name='chum'><p id='trueP'>True</p></input></br> <input id='falseRadio' type='radio' name='chum'><p id='falseP'>False</p></input></br> <button id='questionFormSubmit' type='button' class='submit' value='Submit'>Submit</button> </form>";
-            var quizManagerTakePageContents = "";
-            var tFTakePageContents = "<p id='questionDisplay' class='quizTaker' ></p> <div id='questionDiv' class='quizTaker'> <div class='testDiv'><input id='c1Radio' type='radio' name='chum'> <label id='c1P' for='c1Radio' >True</label><br> </div> <div class='testDiv'> <input id='c2Radio' type='radio' name='chum'> <label id='c2P' for='c2Radio' >False</label><br> </div> </div> <p id='questionNumber' class='quizTaker' ></p> <button id='nextButton'>Next ></button> ";
-            var mCTakePageContents = "<p id='questionDisplay' class='quizTaker' ></p> <div id='questionDiv' class='quizTaker'> <div class='testDiv'><input id='c1Radio' type='radio' name='chum'> <label id='c1P' for='c1Radio' ></label><br> </div> <div class='testDiv'> <input id='c2Radio' type='radio' name='chum'> <label id='c2P' for='c2Radio' ></label><br> </div> <div class='testDiv'> <input id='c3Radio' type='radio' name='chum'> <label id='c3P' for='c3Radio' ></label><br></div> <div class='testDiv'> <input id='c4Radio' type='radio' name='chum'> <label id='c4P' for='c4Radio' ></label> <br></div></div> <p id='questionNumber' class='quizTaker' ></p> <button id='nextButton'>Next ></button> ";
-            var scorePageContents = "<h1 id='scoreTitle' >Quiz Score</h1> <p id='quizScore'></p> <p id='xOfX'></p> <button id='retakeButton'>Retake</button> <p id='newQuizAd'>To take a different quiz click on User Page button</p> ";
-        	var usersArray = [];
-        	var currentUser;
 
-//
-//
-//
-//----------------------------------------------------  Functions  ---------------------------------------------------------------
-//
-//
-            
+        //----------------------------------------------------  Functions  ---------------------------------------------------------------
 
-            function PrevButtonMaker() {   //-- Previous button object. Each page has a number that corresponds to an index in an array. The page number is stored in the historyArray each time visited
-                function PrevButton() {
-                    this.historyArray = [];
-                    this.pageArray = [loginPage, userPage, quizManagerMakePage, quizMakerPage, mCQuestionPage, tFQuestionPage];
-                    if(this.historyArray.length > 10) {
-                        this.historyArray.shift();
-                    }
-                }
-
-                PrevButton.prototype.setPageHistory = function(pageNumber) {
-                    this.historyArray.push(pageNumber);
-                }
-
-                PrevButton.prototype.makePageLoad = function() {
-                    return this.pageArray[this.historyArray[this.historyArray.length - 2]];
-                }
-
-                PrevButton.prototype.loadPage = function(page) {
-                    this.historyArray.pop();
-                    return page();
-                }
-
-                var instance = new PrevButton();
-                return instance;
-            }
-
-            var prevButton = PrevButtonMaker();
-
-			function storeUsersArray() {
-				//-- look for an object in usersArray with same username 
-				compareItemsInArray(usersArray, 0, currentUser.username , "username",
-					//-- if found, callback overwrites usersArray object at that index with current user info
-					function(index) {
-					usersArray[index] = currentUser;
-					//-- stores usersArray into local memory
-					localStorage.setItem("usersArray", JSON.stringify(usersArray));
-			} , //-- if not found, is pushed into usersArray and stored into local memory
-					function(index) {usersArray.push(currentUser);
-					localStorage.setItem("usersArray", JSON.stringify(usersArray));
-				});
-	        }
-			function getUsersArray() {
-			        function a() {
-			        	var a = localStorage.getItem("usersArray");
-			        	var b = JSON.parse(a);
-			        	var c = [];
-			        	for(i = 0; i < b.length; i++) {  // for each object in b a newUser object is created.
-			        		var d = NewUserMaker(b[i].username);
-			        		for(j = 0; j < b[i].quizArray.length; j++) { // for each object, the quizzes are made
-			        			var e = NewQuizMaker(b[i].quizArray[j].quizName);
-			        				for(h = 0; h < b[i].quizArray[j].questionArray.length; h++) { // for each quiz, the question objects are made
-                                        if(b[i].quizArray[j].questionArray[h].questionType == "m") { // if the questionType is "m" it creates a multiple choice question and pushes it to the quiz.questionArray
-    			        					var f = NewMCQuestionMaker(b[i].quizArray[j].questionArray[h].qBox, b[i].quizArray[j].questionArray[h].cBoxArray, b[i].quizArray[j].questionArray[h].aBox);
-    			        					e.questionArray.push(f);
-                                        } else if(b[i].quizArray[j].questionArray[h].questionType == "t") { // if the questionType is "t" it creates a true false question and pushes it to the quiz.questionArray
-                                            var f = NewTFQuestionMaker(b[i].quizArray[j].questionArray[h].qBox, b[i].quizArray[j].questionArray[h].trueRadio, b[i].quizArray[j].questionArray[h].falseRadio, b[i].quizArray[j].questionArray[h].aBox);
-                                            e.questionArray.push(f);
-                                        }
-			        				}
-			        			d.quizArray.push(e); // each quiz object is pushed to user.quizArray
-			        		}
-			        		c.push(d); // each user object is pushed into the c array
-			        	};
-			        	return c;
-			        }
-
-			        return usersArray = a(); // the c array with all the user objects is loaded into usersArray
-			}
-
-        	function compareItemsInArray(arrayToUse, index, lookFor, propertyToUse, foundCallback, elseCallback) {   //-- For a given array, compare array value against a specified one and if found do something, or if not found, do something.
-                if(index < arrayToUse.length){
-                    var checker = arrayToUse[index];
-                    if(checker[propertyToUse] == lookFor) {
-                        return foundCallback(index);
-                    } else {
-                        var newIndex = index + 1;
-                        return index * compareItemsInArray(arrayToUse, newIndex, lookFor, propertyToUse, foundCallback, elseCallback);
-                    }
-                } else {
-                    return elseCallback();
-                }
-            }
-
-	        function NewUserMaker(username) {   //-- NewUser object with methods associated with quizzes, questions, and answers
-        		function NewUser(username){
-        			this.username = username;
-        			this.quizArray = [];
-        			this.quizIndex = 0;
-        			this.questionIndex = 0;
-                    this.answerArray = [];
-        		}
-
-        		NewUser.prototype.setQuizIndex = function(r) {
-        			this.quizIndex = r;
-        		}
-
-        		NewUser.prototype.getQuizIndex = function() {
-        			return this.quizIndex;
-        		}
-
-        		NewUser.prototype.setQuestionIndex = function(r) {
-        			this.questionIndex = r;
-        		}
-
-        		NewUser.prototype.getQuestionIndex = function() {
-        			return this.questionIndex;
-        		}
-
-                NewUser.prototype.addToAnswerArray = function(r) {
-                    this.answerArray.push(r);
-                }
-
-                NewUser.prototype.getAnswerArray = function() {
-                    return this.answerArray;
-                }
-
-                NewUser.prototype.resetAnswerArray = function() {
-                    this.answerArray = [];
-                }
-
-        		var instance = new NewUser(username);
-        		return instance;
-        	}
-
-        	function NewQuizMaker(quizName) {   //-- Quiz object. The answer key is handled in it's methods
-        		function NewQuiz(quizName){
-        			this.quizName = quizName;
-        			this.questionArray = [];
-                    this.answerKey = [];
-        		}
-
-                NewQuiz.prototype.createAnswerKey = function() {
-                    var a = this.answerKey;
-                    var b = this.questionArray;
-                        for(i = 0; i < b.length; i++) {
-                            a.push(b[i].aBox);
+            // These functions are the components of the program
+                
+                //-- Previous button object. Each page has a number that corresponds to an index in an array. The page number is stored in the historyArray each time visited.
+                function PrevButtonMaker() {   
+                    function PrevButton() {
+                        this.historyArray = [];
+                        this.pageArray = [loginPage, userPage, quizManagerMakePage, quizMakerPage, mCQuestionPage, tFQuestionPage];
+                        if(this.historyArray.length > 10) {
+                            this.historyArray.shift();
                         }
-                    this.answerKey = a;
+                    }
+
+                    PrevButton.prototype.setPageHistory = function(pageNumber) {
+                        this.historyArray.push(pageNumber);
+                    }
+
+                    PrevButton.prototype.makePageLoad = function() {
+                        return this.pageArray[this.historyArray[this.historyArray.length - 2]];
+                    }
+
+                    PrevButton.prototype.loadPage = function(page) {
+                        this.historyArray.pop();
+                        return page();
+                    }
+
+                    var instance = new PrevButton();
+                    return instance;
                 }
 
-                NewQuiz.prototype.getAnswerKey = function() {
-                    return this.answerKey;
-                }
+                var prevButton = PrevButtonMaker();
 
-        		var instance = new NewQuiz(quizName);
-        		return instance;
-        	}
+                /* 
+                 * Look for an object in usersArray with same username.
+                 * If found, callback overwrites usersArray object at that index with current user info.
+                 * Stores usersArray into local memory.
+                 * If not found, is pushed into usersArray and stored into local memory.
+                */
+    			function storeUsersArray() {
+    				compareItemsInArray(usersArray, 0, currentUser.username , "username",
+    					function(index) {
+    					usersArray[index] = currentUser;
+    					localStorage.setItem("usersArray", JSON.stringify(usersArray));
+    			        } ,
+    					function(index) {usersArray.push(currentUser);
+    					localStorage.setItem("usersArray", JSON.stringify(usersArray));
+    				    }
+                    );
+    	        }
 
-        	function NewMCQuestionMaker(a, b, c) {   //-- Multiple choice question object
-        		function NewMCQuestion(){
-        			this.qBox = a;
-        			this.cBoxArray = b;
-        			this.aBox = c;
-                    this.questionType = "m";
-                    this.questionStatus = "new";
-        		}
+                /*
+                 * For each object in b, a newUser object is created.
+                 * For each object, the quizzes are made.
+                 * For each quiz, the question objects are made.
+                 * If the questionType is "m" it creates a multiple choice question and pushes it to the quiz.questionArray.
+                 * If the questionType is "t" it creates a true false question and pushes it to the quiz.questionArray.
+                 * Each quiz object is pushed to user.quizArray.
+                 * Each user object is pushed into the c array.
+                 * The c array with all the user objects is loaded into usersArray
+                */
+    			function getUsersArray() {
+    			        function a() {
+    			        	var a = localStorage.getItem("usersArray");
+    			        	var b = JSON.parse(a);
+    			        	var c = [];
+    			        	for(i = 0; i < b.length; i++) {  
+    			        		var d = NewUserMaker(b[i].username);
+    			        		for(j = 0; j < b[i].quizArray.length; j++) { 
+    			        			var e = NewQuizMaker(b[i].quizArray[j].quizName);
+    			        				for(h = 0; h < b[i].quizArray[j].questionArray.length; h++) { 
+                                            if(b[i].quizArray[j].questionArray[h].questionType == "m") { 
+        			        					var f = NewMCQuestionMaker(b[i].quizArray[j].questionArray[h].qBox, b[i].quizArray[j].questionArray[h].cBoxArray, b[i].quizArray[j].questionArray[h].aBox);
+        			        					e.questionArray.push(f);
+                                            } else if(b[i].quizArray[j].questionArray[h].questionType == "t") { 
+                                                var f = NewTFQuestionMaker(b[i].quizArray[j].questionArray[h].qBox, b[i].quizArray[j].questionArray[h].trueRadio, b[i].quizArray[j].questionArray[h].falseRadio, b[i].quizArray[j].questionArray[h].aBox);
+                                                e.questionArray.push(f);
+                                            }
+    			        				}
+    			        			d.quizArray.push(e); 
+    			        		}
+    			        		c.push(d); 
+    			        	};
+    			        	return c;
+    			        }
 
-                NewMCQuestion.prototype.setQuestionStatus = function(status) {
-                    this.questionStatus = status;
-                }
+    			        return usersArray = a(); 
+    			}
 
-                NewMCQuestion.prototype.getQuestionStatus = function() {
-                    return this.questionStatus;
-                }
-
-        		var instance = new NewMCQuestion();
-        		return instance;
-        	}
-
-            function NewTFQuestionMaker(a, b, c, d) {   //-- True/false question object
-                function NewTFQuestion(){
-                    this.qBox = a;
-                    this.trueRadio = b;
-                    this.falseRadio = c;
-                    this.aBox = d;
-                    this.questionType = "t";
-                    this.questionStatus = "new";
-                }
-
-                NewTFQuestion.prototype.setQuestionStatus = function(status) {
-                    this.questionStatus = status;
-                }
-
-                NewTFQuestion.prototype.getQuestionStatus = function() {
-                    return this.questionStatus;
-                }
-
-                NewTFQuestion.prototype.setABox = function() {
-                    if(this.trueRadio == true) {
-                        this.aBox = "True";
+                // For a given array, compare array value against a specified one and if found do something, or if not found, do something.
+            	function compareItemsInArray(arrayToUse, index, lookFor, propertyToUse, foundCallback, elseCallback) {   
+                    if(index < arrayToUse.length){
+                        var checker = arrayToUse[index];
+                        if(checker[propertyToUse] == lookFor) {
+                            return foundCallback(index);
+                        } else {
+                            var newIndex = index + 1;
+                            return index * compareItemsInArray(arrayToUse, newIndex, lookFor, propertyToUse, foundCallback, elseCallback);
+                        }
                     } else {
-                        this.aBox = "False";
-                    };
+                        return elseCallback();
+                    }
                 }
 
-                var instance = new NewTFQuestion();
-                return instance;
-            }
+                // NewUser object with methods associated with quizzes, questions, and answers
+    	        function NewUserMaker(username) {   
+            		function NewUser(username){
+            			this.username = username;
+            			this.quizArray = [];
+            			this.quizIndex = 0;
+            			this.questionIndex = 0;
+                        this.answerArray = [];
+            		}
 
-        	function login(userNameTextBox, newOrUsed) {   //-- Login function for new or returning users. Checks for the username and creates new user object instance for new user.
-        		getUsersArray(); //-- sets usersArray to localStorage
-        		if(newOrUsed == "used") {
-        			function loginUsedErrorMessage() {
-        				$('#existingUserMessage').empty();
-        				$('#existingUserMessage').text("Sorry, your username was not found.");
-        			}
-        			compareItemsInArray(usersArray, 0, userNameTextBox, "username", function(index) {userIndex = index; loginUser(usersArray[userIndex]); userPage();}, loginUsedErrorMessage);
-        		} else  if(newOrUsed == "new") {
-		        			function loginNewErrorMessage() {
-		        				$('#newUserMessage').empty();
-		        				$('#newUserMessage').text("Sorry, that username is not available.");
-		        			}
-		        			compareItemsInArray(usersArray, 0, userNameTextBox, "username", loginNewErrorMessage, function() {
-		        				var newUser = NewUserMaker($('#newUserBox').val());
-		        				usersArray.push(newUser);
-		        				loginUser(newUser);
-		        				storeUsersArray();
-		        				getUsersArray();
-		        				userPage();
-		        			});
-        				}
-        	}
+            		NewUser.prototype.setQuizIndex = function(r) {
+            			this.quizIndex = r;
+            		}
 
+            		NewUser.prototype.getQuizIndex = function() {
+            			return this.quizIndex;
+            		}
 
-	        function loginUser(user) {   //-- loads returning users info into program
-	        	return currentUser = user;
-        	}
+            		NewUser.prototype.setQuestionIndex = function(r) {
+            			this.questionIndex = r;
+            		}
 
-        	function makeButton(buttonType, idName, className, valueName, targetID) {  // idName and targetID both need "#" included.
-	            if(buttonType == "button") {
-	              $(targetID).append("<button id=" + idName + " class=" + className + " value=" + valueName + ">" + valueName + "</button> ");
-	            } else if(buttonType == "submit") {
-	              $(targetID).append("<button type=" + buttonType + " id=" + idName + " class=" + className + " value=" + valueName + ">" + valueName + "</button> ");
-	            }
-           	}
+            		NewUser.prototype.getQuestionIndex = function() {
+            			return this.questionIndex;
+            		}
 
-        	function scrollingContainer(arrayToUse, propertyToUse, buttonEventCallback) {   //-- creates buttons based on a specified property for values in an array
-        		for(i = 0; i < arrayToUse.length; i++) {
-        			makeButton("button", i, "items", arrayToUse[i][propertyToUse], "#scrollingContainerDiv");
-        			function a(index) {
-        				function b() {
-        					buttonEventCallback(index);
-        				}
-        				return b;
-        			}
-                    var c;
-        			buttonEvent("#" + i, c = a(i));
-        		}
-	        }
+                    NewUser.prototype.addToAnswerArray = function(r) {
+                        this.answerArray.push(r);
+                    }
 
-        	function pageLoad(title, pageContents){   //-- Modifies the title and content for each page
-        		$("#title,#contentContainer").empty();
-        		$("#title").html(title);
-        		$("#contentContainer").html(pageContents);
-        	}
+                    NewUser.prototype.getAnswerArray = function() {
+                        return this.answerArray;
+                    }
 
-        	function buttonEvent(buttonID, eventCallback) {   
-	            $(buttonID).unbind().click(eventCallback);
-          	}
+                    NewUser.prototype.resetAnswerArray = function() {
+                        this.answerArray = [];
+                    }
 
-          	function setMCQuestionObject() {   //-- sets all question text-box values to a var and populates the mcquestion object with them
-          		var qBox = $("#qBox").val();
-          		var c1Box = $("#c1Box").val();
-          		var c2Box = $("#c2Box").val();
-          		var c3Box = $("#c3Box").val();
-          		var c4Box = $("#c4Box").val();
-          		var aBox = $("#aBox").val();
-          		var cBoxArraySet = [c1Box, c2Box, c3Box, c4Box];
-          		var questionObject = NewMCQuestionMaker(qBox, cBoxArraySet, aBox);
-          		currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()] = questionObject;
-          		storeUsersArray();
-          	}
+            		var instance = new NewUser(username);
+            		return instance;
+            	}
 
-            function setTFQuestionObject() {  //-- same as mcquestion but records value of checked radio button
-                var qBox = $("#qBox").val();
-                var trueRadio = $("#trueRadio").prop("checked");
-                var falseRadio = $("#falseRadio").prop("checked");
-                var questionObject = NewTFQuestionMaker(qBox, trueRadio, falseRadio);
-                currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()] = questionObject;
-                currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()].setABox();
-                storeUsersArray();
-            }
+                // Quiz object. The answer key is handled in it's methods
+            	function NewQuizMaker(quizName) {
+            		function NewQuiz(quizName){
+            			this.quizName = quizName;
+            			this.questionArray = [];
+                        this.answerKey = [];
+            		}
 
-        	function newQuizSetter() {  //-- stores name of quiz
+                    NewQuiz.prototype.createAnswerKey = function() {
+                        var a = this.answerKey;
+                        var b = this.questionArray;
+                            for(i = 0; i < b.length; i++) {
+                                a.push(b[i].aBox);
+                            }
+                        this.answerKey = a;
+                    }
+
+                    NewQuiz.prototype.getAnswerKey = function() {
+                        return this.answerKey;
+                    }
+
+            		var instance = new NewQuiz(quizName);
+            		return instance;
+            	}
+                // Multiple choice question object
+            	function NewMCQuestionMaker(a, b, c) {
+            		function NewMCQuestion(){
+            			this.qBox = a;
+            			this.cBoxArray = b;
+            			this.aBox = c;
+                        this.questionType = "m";
+                        this.questionStatus = "new";
+            		}
+
+                    NewMCQuestion.prototype.setQuestionStatus = function(status) {
+                        this.questionStatus = status;
+                    }
+
+                    NewMCQuestion.prototype.getQuestionStatus = function() {
+                        return this.questionStatus;
+                    }
+
+            		var instance = new NewMCQuestion();
+            		return instance;
+            	}
+
+                // True/false question object
+                function NewTFQuestionMaker(a, b, c, d) {
+                    function NewTFQuestion(){
+                        this.qBox = a;
+                        this.trueRadio = b;
+                        this.falseRadio = c;
+                        this.aBox = d;
+                        this.questionType = "t";
+                        this.questionStatus = "new";
+                    }
+
+                    NewTFQuestion.prototype.setQuestionStatus = function(status) {
+                        this.questionStatus = status;
+                    }
+
+                    NewTFQuestion.prototype.getQuestionStatus = function() {
+                        return this.questionStatus;
+                    }
+
+                    NewTFQuestion.prototype.setABox = function() {
+                        if(this.trueRadio == true) {
+                            this.aBox = "True";
+                        } else {
+                            this.aBox = "False";
+                        };
+                    }
+
+                    var instance = new NewTFQuestion();
+                    return instance;
+                }
+
+                // Login function for new or returning users. Checks for the username and creates new user object instance for new user.
+            	function login(userNameTextBox, newOrUsed) {
+            		getUsersArray();
+            		if(newOrUsed == "used") {
+            			function loginUsedErrorMessage() {
+            				$('#existingUserMessage').empty();
+            				$('#existingUserMessage').text("Sorry, your username was not found.");
+            			}
+            			compareItemsInArray(usersArray, 0, userNameTextBox, "username", function(index) {userIndex = index; loginUser(usersArray[userIndex]); userPage();}, loginUsedErrorMessage);
+            		} else  if(newOrUsed == "new") {
+    		        			function loginNewErrorMessage() {
+    		        				$('#newUserMessage').empty();
+    		        				$('#newUserMessage').text("Sorry, that username is not available.");
+    		        			}
+    		        			compareItemsInArray(usersArray, 0, userNameTextBox, "username", loginNewErrorMessage, function() {
+    		        				var newUser = NewUserMaker($('#newUserBox').val());
+    		        				usersArray.push(newUser);
+    		        				loginUser(newUser);
+    		        				storeUsersArray();
+    		        				getUsersArray();
+    		        				userPage();
+    		        			});
+            				}
+            	}
+
+                // Loads returning users info into program
+    	        function loginUser(user) {   
+    	        	return currentUser = user;
+            	}
+
+                // idName and targetID both need "#" included.
+            	function makeButton(buttonType, idName, className, valueName, targetID) {  
+    	            if(buttonType == "button") {
+    	              $(targetID).append("<button id=" + idName + " class=" + className + " value=" + valueName + ">" + valueName + "</button> ");
+    	            } else if(buttonType == "submit") {
+    	              $(targetID).append("<button type=" + buttonType + " id=" + idName + " class=" + className + " value=" + valueName + ">" + valueName + "</button> ");
+    	            }
+               	}
+
+                // Creates buttons based on a specified property for values in an array
+            	function scrollingContainer(arrayToUse, propertyToUse, buttonEventCallback) {   
+            		for(i = 0; i < arrayToUse.length; i++) {
+            			makeButton("button", i, "items", arrayToUse[i][propertyToUse], "#scrollingContainerDiv");
+            			function a(index) {
+            				function b() {
+            					buttonEventCallback(index);
+            				}
+            				return b;
+            			}
+                        var c;
+            			buttonEvent("#" + i, c = a(i));
+            		}
+    	        }
+
+                // Modifies the title and content for each page
+            	function pageLoad(title, pageContents){   
+            		$("#title,#contentContainer").empty();
+            		$("#title").html(title);
+            		$("#contentContainer").html(pageContents);
+            	}
+
+            	function buttonEvent(buttonID, eventCallback) {   
+    	            $(buttonID).unbind().click(eventCallback);
+              	}
+
+                // Sets all question text-box values to a var and populates the mcquestion object with them
+              	function setMCQuestionObject() {   
+              		var qBox = $("#qBox").val();
+              		var c1Box = $("#c1Box").val();
+              		var c2Box = $("#c2Box").val();
+              		var c3Box = $("#c3Box").val();
+              		var c4Box = $("#c4Box").val();
+              		var aBox = $("#aBox").val();
+              		var cBoxArraySet = [c1Box, c2Box, c3Box, c4Box];
+              		var questionObject = NewMCQuestionMaker(qBox, cBoxArraySet, aBox);
+              		currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()] = questionObject;
+              		storeUsersArray();
+              	}
+
+                // Same as mcquestion but records value of checked radio button
+                function setTFQuestionObject() {  
+                    var qBox = $("#qBox").val();
+                    var trueRadio = $("#trueRadio").prop("checked");
+                    var falseRadio = $("#falseRadio").prop("checked");
+                    var questionObject = NewTFQuestionMaker(qBox, trueRadio, falseRadio);
+                    currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()] = questionObject;
+                    currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()].setABox();
+                    storeUsersArray();
+                }
+
+                // Stores name of quiz
+            	function newQuizSetter() {  
         			var currentUserIndex = currentUser.quizArray.length;
         			currentUser.setQuizIndex(currentUserIndex);
         			currentUser.quizArray[currentUser.getQuizIndex()].quizName = $("#quizName").val();
         			storeUsersArray();
-        		}
-            function oldQuizSetter() {  //-- stores modified quiz name
-                currentUser.quizArray[currentUser.getQuizIndex()].quizName = $("#quizName").val();
-                storeUsersArray();
-            }
+            	}
 
-                
-                
-//
-//
-//
-//
-//-------------------------------------------------  Program Pages  -----------------------------------------------
-//
-//
-//
-        	function loginPage() {
-                prevButton.setPageHistory(0);
-        		if(localStorage.getItem("usersArray") === null) {  //--if there is no slot in localStorage called usersArray, then a slot is made with that name.
-        			localStorage.setItem("usersArray", JSON.stringify(usersArray));
-        		}
-        		pageLoad(loginPageTitle, loginPageContents); //-- loads page title and contents
-        		buttonEvent('#loginUserButton', function() {login($('#existingUserBox').val(), "used");}); //-- sets a handler on the click event of loginUserButton with callback to login. Login stores the value of existingUserBox and runs the "used" flow of login
-        		buttonEvent('#createUserButton', function() {login($('#newUserBox').val(), "new");}); //-- sets a handler on the click event of createUserButton with callback to login. Login stores the value of newUserBox and runs the "new" flow of login
-        		buttonEvent('#quitButton', function() {
-        		location.reload();}); //-- sets the handler on the click event for the quitButton. This saves all data in reloads the program
-        	}
-
-
-        	function userPage() {
-                prevButton.setPageHistory(1);
-                buttonEvent("#prevButton", function() {
-                    prevButton.loadPage(prevButton.makePageLoad());
-                });
-                buttonEvent("#userPageButton", function() {
+                // Stores modified quiz name
+                function oldQuizSetter() {  
+                    currentUser.quizArray[currentUser.getQuizIndex()].quizName = $("#quizName").val();
                     storeUsersArray();
-                    userPage();
-                });
-        		pageLoad("Welcome " + currentUser.username + "!", userPageContents); //-- loads page title and contents with a friendly welcome
-        		buttonEvent("#makeQuizButton", quizManagerMakePage);
-                buttonEvent("#takeQuizButton", function(){currentUser.quizArray[currentUser.getQuizIndex()].createAnswerKey(); quizManagerTakePage();});
-        	}
+                }
 
-            function quizManagerTakePage() {
-                prevButton.setPageHistory(6);
-                pageLoad(currentUser.username, quizManagerMakePageContents);
-                $("#contentContainer").append("<div id='scrollingContainerDiv'></div> "); //--scrollingContainer(arrayToUse, index, propertyToUse, buttonEventCallback)
-                scrollingContainer(currentUser.quizArray, "quizName", function(index) {currentUser.setQuizIndex(index); quizTakerPage();});
-            }
 
-            function quizTakerPage() {
-                currentUser.setQuestionIndex(0);
-                currentUser.resetAnswerArray();
-                var currentQuestionObject = currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()];
-                var questionArrayCollectionBasket = [];
+        //-------------------------------------------------  Program Pages  -----------------------------------------------
 
-                function mCPuller() {
+            // These functions are the pages of the program. All the other program components get loaded in from these.
+
+                // If there is no slot in localStorage called usersArray, then a slot is made with that name.
+                function loginPage() {
+                    prevButton.setPageHistory(0);
+            		if(localStorage.getItem("usersArray") === null) {  
+            			localStorage.setItem("usersArray", JSON.stringify(usersArray));
+            		}
+            		pageLoad(loginPageTitle, loginPageContents); 
+            		buttonEvent('#loginUserButton', function() {login($('#existingUserBox').val(), "used");}); 
+            		buttonEvent('#createUserButton', function() {login($('#newUserBox').val(), "new");}); 
+            		buttonEvent('#quitButton', function() {location.reload();}); 
+            	}
+
+
+            	function userPage() {
+                    prevButton.setPageHistory(1);
+                    buttonEvent("#prevButton", function() {
+                        prevButton.loadPage(prevButton.makePageLoad());
+                    });
+                    buttonEvent("#userPageButton", function() {
+                        storeUsersArray();
+                        userPage();
+                    });
+            		pageLoad("Welcome " + currentUser.username + "!", userPageContents);
+            		buttonEvent("#makeQuizButton", quizManagerMakePage);
+                    buttonEvent("#takeQuizButton", function(){currentUser.quizArray[currentUser.getQuizIndex()].createAnswerKey(); quizManagerTakePage();});
+            	}
+
+                function quizManagerTakePage() {
+                    prevButton.setPageHistory(6);
+                    pageLoad(currentUser.username, quizManagerMakePageContents);
+                    $("#contentContainer").append("<div id='scrollingContainerDiv'></div> ");
+                    scrollingContainer(currentUser.quizArray, "quizName", function(index) {currentUser.setQuizIndex(index); quizTakerPage();});
+                }
+
+                function quizTakerPage() {
+                    currentUser.setQuestionIndex(0);
+                    currentUser.resetAnswerArray();
+                    var currentQuestionObject = currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()];
+                    var questionArrayCollectionBasket = [];
+
+                    // Pulls the question information from the current question in use and places it into the questionArrayCollectionBasket.
+                    function mCPuller() {
+                            for(var propt in currentQuestionObject) {
+                                if(currentQuestionObject.hasOwnProperty(propt)) {
+                                    if(propt == "qBox") {
+                                        questionArrayCollectionBasket.push(currentQuestionObject.qBox);
+                                    } else if(propt == "cBoxArray") {
+                                        for(i = 0; i < currentQuestionObject.cBoxArray.length; i++) {
+                                            questionArrayCollectionBasket.push(currentQuestionObject.cBoxArray[i]);
+                                        }
+                                    } else if(propt == "aBox") {
+                                        questionArrayCollectionBasket.push(currentQuestionObject.aBox);
+                                    }
+                                }
+                            }
+                        }
+
+                    // Writes the current question information to the screen.
+                    function mCPusher() {
+                        for(i = 0; i < questionArrayCollectionBasket.length; i++) {
+                            switch(i) {
+                                case 0:
+                                    $("#questionDisplay").html(currentUser.getQuestionIndex() + 1 + ".  ");
+                                    $("#questionDisplay").append(questionArrayCollectionBasket[0]);
+                                    break;
+                                case 1:
+                                    $("#c1P").html(questionArrayCollectionBasket[1]);
+                                    break;
+                                case 2:
+                                    $("#c2P").html(questionArrayCollectionBasket[2]);
+                                    break;
+                                case 3:
+                                    $("#c3P").html(questionArrayCollectionBasket[3]);
+                                    break;
+                                case 4:
+                                    $("#c4P").html(questionArrayCollectionBasket[4]);
+                                    break;
+                                case 5:
+                                    questionArrayCollectionBasket = [];
+                                    break;
+                            }
+                        }
+                    }
+
+                    // Checks for an answer and records it if there is or sends an alert to answer the question.
+                    function storeAnswer() {
+                        var idArray = ["#c1Radio", "#c2Radio", "#c3Radio", "#c4Radio"];
+                        var empty;
+                        if(currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()].questionType == "t") {
+                            for(i = 0; i < 2; i++) {
+                                if($(idArray[i]).is(":checked")) {
+                                    currentUser.addToAnswerArray($(idArray[i]).next().text());
+                                    empty = i;
+                                }
+                            }
+                        } else if(currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()].questionType == "m") {
+                            for(i = 0; i < idArray.length; i++) {
+                                if($(idArray[i]).is(":checked")) {
+                                    currentUser.addToAnswerArray($(idArray[i]).next().text());
+                                    empty = i;
+                                }
+                            }
+                        }
+                        if(empty == undefined) {
+                            alert("Must answer question to continue.");
+                            return;
+                        }
+                        currentUser.setQuestionIndex(currentUser.getQuestionIndex() + 1);
+                        currentQuestionObject = currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()];
+                    }
+
+                    // Loads page structure based on what kind of question is being loaded. 
+                    function loadContents() {
+                        if(currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()].questionType == "t") {
+                            pageLoad(currentUser.quizArray[currentUser.getQuizIndex()].quizName, tFTakePageContents);
+                        } else if(currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()].questionType == "m") {
+                            pageLoad(currentUser.quizArray[currentUser.getQuizIndex()].quizName, mCTakePageContents);
+                        }
+                        if(currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()].questionType == "t") {
+                            $("#questionDisplay").text(currentUser.getQuestionIndex() + 1 + ".  ");
+                            $("#questionDisplay").append(currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()].qBox);
+                        } else if(currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()].questionType == "m") {
+                            mCPuller();
+                            mCPusher();
+                        }
+                        buttonEvent("#nextButton", function() {
+                                if(currentUser.quizArray[currentUser.getQuizIndex()].questionArray.length == currentUser.getQuestionIndex() + 1) {
+                                    storeAnswer(); 
+                                    scorePage();
+                                } else {
+                                    storeAnswer(); 
+                                    loadContents();
+                                }
+                            }
+                        );
+                    }
+
+                    loadContents();
+                }
+
+                // Calculates score by comparing the answers against answerKey and storing the correct answers in correctArray, then divides the length of correctArray and answerKey. 
+                function scorePage() {
+                    pageLoad(currentUser.quizArray[currentUser.getQuizIndex()].quizName, scorePageContents)
+                    var correctArray = [];
+                    for(i = 0; i < currentUser.quizArray[currentUser.getQuizIndex()].questionArray.length; i++) {
+                        if(currentUser.quizArray[currentUser.getQuizIndex()].answerKey[i] == currentUser.answerArray[i]) {
+                            correctArray.push(currentUser.answerArray[i]);
+                        }
+                    }
+                    function percentage() {
+                        var correctScore = Math.floor(correctArray.length/currentUser.quizArray[currentUser.getQuizIndex()].questionArray.length * 100);
+                        return correctScore + "%";
+                    }
+                    $("#quizScore").text(percentage());
+                    buttonEvent("#retakeButton", quizTakerPage);
+                }
+
+            	function quizManagerMakePage() {
+                    prevButton.setPageHistory(2);
+            		pageLoad(currentUser.username, quizManagerMakePageContents);
+            		makeButton("button", "newQuizButton", "none", "New Quiz", "#contentContainer");
+            		buttonEvent("#newQuizButton", function() {
+                			var newQuiz = NewQuizMaker();
+                			currentUser.quizArray.push(newQuiz);
+                			currentUser.setQuizIndex(currentUser.quizArray.length - 1);
+                			storeUsersArray();
+                			quizMakerPage();
+                		}
+                    );
+            		$("#contentContainer").append("<div id='scrollingContainerDiv'></div> "); //--scrollingContainer(arrayToUse, index, propertyToUse, buttonEventCallback)
+            		scrollingContainer(currentUser.quizArray, "quizName", function(index) {currentUser.setQuizIndex(index); quizMakerPage();});
+            	}
+
+            	function quizMakerPage() {
+                    prevButton.setPageHistory(3);
+            		var currentQuizIndex = currentUser.getQuizIndex();
+            		var iffer = function() {
+            			if(currentUser.quizArray[currentQuizIndex].quizName == undefined) { 
+    	        			return currentUser.username;
+    	        		} else { 
+    	        			return currentUser.quizArray[currentQuizIndex].quizName;
+    	        		}
+    	        	}
+            		pageLoad(iffer(), quizMakerPageContents);
+            		if(currentUser.quizArray[currentQuizIndex].quizName === undefined){
+            			$("#quizName").attr("value", "Quiz Name");
+            		} else {
+            			$("#quizName").attr("value", currentUser.quizArray[currentQuizIndex].quizName);
+            		}
+            		makeButton("button", "tFButton", "none", "T/F", "#contentContainer");
+            		buttonEvent("#tFButton", function() {oldQuizSetter(); currentUser.setQuestionIndex(currentUser.quizArray[currentUser.getQuizIndex()].questionArray.length); setTFQuestionObject(); tFQuestionPage();});
+            		makeButton("button", "mCButton", "none", "MC", "#contentContainer");
+            		buttonEvent("#mCButton", function() {oldQuizSetter(); currentUser.setQuestionIndex(currentUser.quizArray[currentUser.getQuizIndex()].questionArray.length); setMCQuestionObject(); mCQuestionPage();});
+            		$("#contentContainer").append("<div id='scrollingContainerDiv'></div> ");
+            		scrollingContainer(currentUser.quizArray[currentQuizIndex].questionArray, "qBox", function(index) {currentUser.setQuestionIndex(index); 
+                        if(currentUser.quizArray[currentQuizIndex].questionArray[currentUser.getQuestionIndex()].questionType == "m"){
+                        currentUser.quizArray[currentQuizIndex].questionArray[currentUser.getQuestionIndex()].setQuestionStatus("not");
+                        mCQuestionPage();
+                    } else if(currentUser.quizArray[currentQuizIndex].questionArray[currentUser.getQuestionIndex()].questionType == "t") {
+                        currentUser.quizArray[currentQuizIndex].questionArray[currentUser.getQuestionIndex()].setQuestionStatus("not");
+                        tFQuestionPage();
+                    }});
+            		makeButton("button", "quizSubmitButton", "submit", "Submit", "#contentContainer");
+            		buttonEvent("#quizSubmitButton", function() {
+            			compareItemsInArray(currentUser.quizArray, 0, "quizName", $("#quizName").val(), function() {
+            				alert("That quiz name is already in use. Please choose another.");
+            				quizMakerPage();}, function() {oldQuizSetter();  quizManagerMakePage();});
+            		});
+            	}
+
+            	function mCQuestionPage() {
+                    prevButton.setPageHistory(4);
+                    var currentQuestionObject = currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()];
+                    var questionArrayCollectionBasket = [];
+
+                    // Pulls the question information from the current question in use and places it into the questionArrayCollectionBasket if the question object has values.
+                    function puller() {
                         for(var propt in currentQuestionObject) {
                             if(currentQuestionObject.hasOwnProperty(propt)) {
                                 if(propt == "qBox") {
@@ -624,320 +821,135 @@
                         }
                     }
 
-                function mCPusher() {
-                    for(i = 0; i < questionArrayCollectionBasket.length; i++) {
-                        switch(i) {
-                            case 0:
-                                $("#questionDisplay").html(currentUser.getQuestionIndex() + 1 + ".  ");
-                                $("#questionDisplay").append(questionArrayCollectionBasket[0]);
-                                break;
-                            case 1:
-                                $("#c1P").html(questionArrayCollectionBasket[1]);
-                                break;
-                            case 2:
-                                $("#c2P").html(questionArrayCollectionBasket[2]);
-                                break;
-                            case 3:
-                                $("#c3P").html(questionArrayCollectionBasket[3]);
-                                break;
-                            case 4:
-                                $("#c4P").html(questionArrayCollectionBasket[4]);
-                                break;
-                            case 5:
-                                questionArrayCollectionBasket = [];
-                                break;
-                        }
-                    }
-                }
-
-                function storeAnswer() {
-                    var idArray = ["#c1Radio", "#c2Radio", "#c3Radio", "#c4Radio"];
-                    var empty;
-                    if(currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()].questionType == "t") {
-                        for(i = 0; i < 2; i++) {
-                            if($(idArray[i]).is(":checked")) {
-                                currentUser.addToAnswerArray($(idArray[i]).next().text());
-                                empty = i;
-                            }
-                        }
-                    } else if(currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()].questionType == "m") {
-                        for(i = 0; i < idArray.length; i++) {
-                            if($(idArray[i]).is(":checked")) {
-                                currentUser.addToAnswerArray($(idArray[i]).next().text());
-                                empty = i;
+                    // Writes the current question information to the screen.
+                    function pusher() {
+                        for(i = 0; i < questionArrayCollectionBasket.length; i++) {
+                            switch(i) {
+                                case 0:
+                                    $("#qBox").attr("value", questionArrayCollectionBasket[0]);
+                                    break;
+                                case 1:
+                                    $("#c1Box").attr("value", questionArrayCollectionBasket[1]);
+                                    break;
+                                case 2:
+                                    $("#c2Box").attr("value", questionArrayCollectionBasket[2]);
+                                    break;
+                                case 3:
+                                    $("#c3Box").attr("value", questionArrayCollectionBasket[3]);
+                                    break;
+                                case 4:
+                                    $("#c4Box").attr("value", questionArrayCollectionBasket[4]);
+                                    break;
+                                case 5:
+                                    $("#aBox").attr("value", questionArrayCollectionBasket[5]);
+                                    break;
                             }
                         }
                     }
-                    if(empty == undefined) {
-                        alert("Must answer question to continue.");
-                        return;
-                    }
-                    currentUser.setQuestionIndex(currentUser.getQuestionIndex() + 1);
-                    currentQuestionObject = currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()];
-                }
 
-                function loadContents() {
-                    if(currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()].questionType == "t") {
-                        pageLoad(currentUser.quizArray[currentUser.getQuizIndex()].quizName, tFTakePageContents);
-                    } else if(currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()].questionType == "m") {
-                        pageLoad(currentUser.quizArray[currentUser.getQuizIndex()].quizName, mCTakePageContents);
+                    // For new question, writes placeholder text to instruct the user.
+                    function newPusher() {
+                        for(i = 0; i < 7; i++) {
+                            switch(i) {
+                                case 0:
+                                    $("#qBox").attr("placeholder", "Type question here.");
+                                    break;
+                                case 1:
+                                    $("#c1Box").attr("placeholder", "Type choice 1 here.");
+                                    break;
+                                case 2:
+                                    $("#c2Box").attr("placeholder", "Type choice 2 here.");
+                                    break;
+                                case 3:
+                                    $("#c3Box").attr("placeholder", "Type choice 3 here.");
+                                    break;
+                                case 4:
+                                    $("#c4Box").attr("placeholder", "Type choice 4 here.");
+                                    break;
+                                case 5:
+                                    $("#aBox").attr("placeholder", "Type correct answer here.");
+                                    break;
+                            }
+                        }
                     }
-                    if(currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()].questionType == "t") {
-                        $("#questionDisplay").text(currentUser.getQuestionIndex() + 1 + ".  ");
-                        $("#questionDisplay").append(currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()].qBox);
-                    } else if(currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()].questionType == "m") {
-                        mCPuller();
-                        mCPusher();
+            		pageLoad(currentUser.quizArray[currentUser.getQuizIndex()].quizName, mCQuestionFormPageContents);
+                    if(currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()].getQuestionStatus() == "new") {
+                        newPusher();
+                    } else {
+                        puller();
+                        pusher();
+                    }
+            		buttonEvent("#questionFormSubmit", function() {setMCQuestionObject(); quizMakerPage();});
+            	}
+
+            	function tFQuestionPage() {
+                    prevButton.setPageHistory(5);
+                    var currentQuestionObject = currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()];
+                    var questionArrayCollectionBasket = [];
+                    
+                    // Pulls the question information from the current question in use and places it into the questionArrayCollectionBasket if the question object has values.
+                    function puller() {
+                        for(var propt in currentQuestionObject) {
+                            if(currentQuestionObject.hasOwnProperty(propt)) {
+                                if(propt == "qBox") {
+                                    questionArrayCollectionBasket.push(currentQuestionObject.qBox);
+                                } else if(propt == "trueRadio") {
+                                        questionArrayCollectionBasket.push(currentQuestionObject.trueRadio);
+                                } else if(propt == "falseRadio") {
+                                    questionArrayCollectionBasket.push(currentQuestionObject.falseRadio);
+                                }
+                            }
+                        }
                     }
                     
-                    buttonEvent("#nextButton", function() {
-                        if(currentUser.quizArray[currentUser.getQuizIndex()].questionArray.length == currentUser.getQuestionIndex() + 1) {
-                            storeAnswer(); 
-                            scorePage();
-                        } else {
-                            storeAnswer(); 
-                            loadContents();
-                        }
-                    });
-                }
-
-                
-                
-                loadContents();;
-            }
-
-            function scorePage() {
-                pageLoad(currentUser.quizArray[currentUser.getQuizIndex()].quizName, scorePageContents)
-                var correctArray = [];
-                for(i = 0; i < currentUser.quizArray[currentUser.getQuizIndex()].questionArray.length; i++) {
-                    if(currentUser.quizArray[currentUser.getQuizIndex()].answerKey[i] == currentUser.answerArray[i]) {
-                        correctArray.push(currentUser.answerArray[i]);
-                    }
-                }
-
-                function percentage() {
-                    var correctScore = Math.floor(correctArray.length/currentUser.quizArray[currentUser.getQuizIndex()].questionArray.length * 100);
-                    return correctScore + "%";
-                }
-
-                $("#quizScore").text(percentage());
-
-                buttonEvent("#retakeButton", quizTakerPage);
-
-            }
-
-        	function quizManagerMakePage() {
-                prevButton.setPageHistory(2);
-        		pageLoad(currentUser.username, quizManagerMakePageContents);
-        		makeButton("button", "newQuizButton", "none", "New Quiz", "#contentContainer");
-        		buttonEvent("#newQuizButton", function() {
-        			var newQuiz = NewQuizMaker();
-        			currentUser.quizArray.push(newQuiz);
-        			currentUser.setQuizIndex(currentUser.quizArray.length - 1);
-        			storeUsersArray();
-        			quizMakerPage();
-        		});
-        		$("#contentContainer").append("<div id='scrollingContainerDiv'></div> "); //--scrollingContainer(arrayToUse, index, propertyToUse, buttonEventCallback)
-        		scrollingContainer(currentUser.quizArray, "quizName", function(index) {currentUser.setQuizIndex(index); quizMakerPage();});
-        	}
-
-
-        	function quizMakerPage() {
-                prevButton.setPageHistory(3);
-        		var currentQuizIndex = currentUser.getQuizIndex();
-        		var iffer = function() {
-        			if(currentUser.quizArray[currentQuizIndex].quizName == undefined) { 
-	        			return currentUser.username;
-	        		} else { 
-	        			return currentUser.quizArray[currentQuizIndex].quizName;
-	        		}
-	        	}
-        		pageLoad(iffer(), quizMakerPageContents);
-        		if(currentUser.quizArray[currentQuizIndex].quizName === undefined){
-        			$("#quizName").attr("value", "Quiz Name");
-        		} else {
-        			$("#quizName").attr("value", currentUser.quizArray[currentQuizIndex].quizName);
-        		}
-        		makeButton("button", "tFButton", "none", "T/F", "#contentContainer");
-        		buttonEvent("#tFButton", function() {oldQuizSetter(); currentUser.setQuestionIndex(currentUser.quizArray[currentUser.getQuizIndex()].questionArray.length); setTFQuestionObject(); tFQuestionPage();});
-        		makeButton("button", "mCButton", "none", "MC", "#contentContainer");
-        		buttonEvent("#mCButton", function() {oldQuizSetter(); currentUser.setQuestionIndex(currentUser.quizArray[currentUser.getQuizIndex()].questionArray.length); setMCQuestionObject(); mCQuestionPage();});
-
-        		$("#contentContainer").append("<div id='scrollingContainerDiv'></div> ");
-        		scrollingContainer(currentUser.quizArray[currentQuizIndex].questionArray, "qBox", function(index) {currentUser.setQuestionIndex(index); 
-                    if(currentUser.quizArray[currentQuizIndex].questionArray[currentUser.getQuestionIndex()].questionType == "m"){
-                    currentUser.quizArray[currentQuizIndex].questionArray[currentUser.getQuestionIndex()].setQuestionStatus("not");
-                    mCQuestionPage();
-                } else if(currentUser.quizArray[currentQuizIndex].questionArray[currentUser.getQuestionIndex()].questionType == "t") {
-                    currentUser.quizArray[currentQuizIndex].questionArray[currentUser.getQuestionIndex()].setQuestionStatus("not");
-                    tFQuestionPage();
-                }});
-        		makeButton("button", "quizSubmitButton", "submit", "Submit", "#contentContainer");
-        		buttonEvent("#quizSubmitButton", function() {
-        			compareItemsInArray(currentUser.quizArray, 0, "quizName", $("#quizName").val(), function() {
-        				alert("That quiz name is already in use. Please choose another.");
-        				quizMakerPage();}, function() {oldQuizSetter();  quizManagerMakePage();});
-        		});
-        	}
-
-        	function mCQuestionPage() {
-                prevButton.setPageHistory(4);
-                var currentQuestionObject = currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()];
-                var questionArrayCollectionBasket = [];
-                function puller() {
-                    for(var propt in currentQuestionObject) {
-                        if(currentQuestionObject.hasOwnProperty(propt)) {
-                            if(propt == "qBox") {
-                                questionArrayCollectionBasket.push(currentQuestionObject.qBox);
-                            } else if(propt == "cBoxArray") {
-                                for(i = 0; i < currentQuestionObject.cBoxArray.length; i++) {
-                                    questionArrayCollectionBasket.push(currentQuestionObject.cBoxArray[i]);
-                                }
-                            } else if(propt == "aBox") {
-                                questionArrayCollectionBasket.push(currentQuestionObject.aBox);
+                    // Writes the current question information to the screen.
+                    function pusher() {
+                        for(i = 0; i < questionArrayCollectionBasket.length; i++) {
+                            switch(i) {
+                                case 0:
+                                    $("#qBox").attr("value", questionArrayCollectionBasket[0]);
+                                    break;
+                                case 1:
+                                    if(questionArrayCollectionBasket[1] == true) {
+                                        $("#trueRadio").prop("checked", true);
+                                    };
+                                    break;
+                                case 2:
+                                    if(questionArrayCollectionBasket[2] == true) {
+                                        $("#falseRadio").prop("checked", true);
+                                    };
+                                    break;
                             }
                         }
                     }
-                }
-                function pusher() {
-                    for(i = 0; i < questionArrayCollectionBasket.length; i++) {
-                        switch(i) {
-                            case 0:
-                                $("#qBox").attr("value", questionArrayCollectionBasket[0]);
-                                break;
-                            case 1:
-                                $("#c1Box").attr("value", questionArrayCollectionBasket[1]);
-                                break;
-                            case 2:
-                                $("#c2Box").attr("value", questionArrayCollectionBasket[2]);
-                                break;
-                            case 3:
-                                $("#c3Box").attr("value", questionArrayCollectionBasket[3]);
-                                break;
-                            case 4:
-                                $("#c4Box").attr("value", questionArrayCollectionBasket[4]);
-                                break;
-                            case 5:
-                                $("#aBox").attr("value", questionArrayCollectionBasket[5]);
-                                break;
+                    function newPusher() {
+                        $("#qBox").attr("placeholder", "Type question here.");
                         }
+            		pageLoad(currentUser.quizArray[currentUser.getQuizIndex()].quizName, tFQuestionFormPageContents);
+                    var questionStatus = currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()];
+                    if(questionStatus.getQuestionStatus() == "new") {
+                        newPusher();
+                    } else {
+                        puller();
+                        pusher();
                     }
-                }
-                function newPusher() {
-                    for(i = 0; i < 7; i++) {
-                        switch(i) {
-                            case 0:
-                                $("#qBox").attr("placeholder", "Type question here.");
-                                break;
-                            case 1:
-                                $("#c1Box").attr("placeholder", "Type choice 1 here.");
-                                break;
-                            case 2:
-                                $("#c2Box").attr("placeholder", "Type choice 2 here.");
-                                break;
-                            case 3:
-                                $("#c3Box").attr("placeholder", "Type choice 3 here.");
-                                break;
-                            case 4:
-                                $("#c4Box").attr("placeholder", "Type choice 4 here.");
-                                break;
-                            case 5:
-                                $("#aBox").attr("placeholder", "Type correct answer here.");
-                                break;
-                        }
-                    }
-                }
-        		pageLoad(currentUser.quizArray[currentUser.getQuizIndex()].quizName, mCQuestionFormPageContents);
-                if(currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()].getQuestionStatus() == "new") {
-                    newPusher();
-                } else {
-                    puller();
-                    pusher();
-                }
-        		buttonEvent("#questionFormSubmit", function() {setMCQuestionObject();
-                    quizMakerPage();});
-        	}
+            		buttonEvent("#questionFormSubmit", function() {setTFQuestionObject();
+                        quizMakerPage();});
+            	}
 
-        	function tFQuestionPage() {
-                prevButton.setPageHistory(5);
-                var currentQuestionObject = currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()];
-                var questionArrayCollectionBasket = [];
-                function puller() {
-                    for(var propt in currentQuestionObject) {
-                        if(currentQuestionObject.hasOwnProperty(propt)) {
-                            if(propt == "qBox") {
-                                questionArrayCollectionBasket.push(currentQuestionObject.qBox);
-                            } else if(propt == "trueRadio") {
-                                    questionArrayCollectionBasket.push(currentQuestionObject.trueRadio);
-                            } else if(propt == "falseRadio") {
-                                questionArrayCollectionBasket.push(currentQuestionObject.falseRadio);
-                            }
-                        }
-                    }
-                }
-                
-                function pusher() {
-                    for(i = 0; i < questionArrayCollectionBasket.length; i++) {
-                        switch(i) {
-                            case 0:
-                                $("#qBox").attr("value", questionArrayCollectionBasket[0]);
-                                break;
-                            case 1:
-                                if(questionArrayCollectionBasket[1] == true) {
-                                    $("#trueRadio").prop("checked", true);
-                                };
-                                break;
-                            case 2:
-                                if(questionArrayCollectionBasket[2] == true) {
-                                    $("#falseRadio").prop("checked", true);
-                                };
-                                break;
-                        }
-                    }
-                }
-                function newPusher() {
-                    $("#qBox").attr("placeholder", "Type question here.");
-                    }
-        		pageLoad(currentUser.quizArray[currentUser.getQuizIndex()].quizName, tFQuestionFormPageContents);
-                var questionStatus = currentUser.quizArray[currentUser.getQuizIndex()].questionArray[currentUser.getQuestionIndex()];
-                if(questionStatus.getQuestionStatus() == "new") {
-                    newPusher();
-                } else {
-                    puller();
-                    pusher();
-                }
-        		buttonEvent("#questionFormSubmit", function() {setTFQuestionObject();
-                    quizMakerPage();});
-        	}
+        //------------------------------------------------------  First Page Invoked  ------------------------------------------------
 
-//
-//
-//
-//------------------------------------------------------  Program Begins  ------------------------------------------------
-//
-//
-//
-
-        	loginPage();
-        }
+            	loginPage();
+            }
 
 
 
 
 //------------------------------------------------------  Run Program  ----------------------------------------------------
 
-
         main();
 
 
-
-        // Main Page
-        	// Main Window Object
-        // User Page
-        // Quiz Page
-        // New Quiz Page
-        // Add MCQuestion Page
-        // Add TFQuestion Page
 
         </script>
     </body>
